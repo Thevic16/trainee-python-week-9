@@ -1,0 +1,25 @@
+version: '3.9'
+
+services:
+
+  web:
+    build: .
+    command: uvicorn app.main:app --reload --workers 1 --host 0.0.0.0 --port 8000
+    volumes:
+      - ./project:/usr/src/app
+    ports:
+      - 8000:8000
+    environment:
+      - DATABASE_URL=postgresql://postgres:password@db/db-film-rental-system-week-9
+    depends_on:
+      - db
+
+  db:
+    image: postgres:13-alpine
+    environment:
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=db-film-rental-system-week-9
+    ports:
+      - "7000:5432"
+
