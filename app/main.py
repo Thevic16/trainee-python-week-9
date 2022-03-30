@@ -48,6 +48,14 @@ async def get_all_accounts():
     return results
 
 
+@app.get('/api/accounts/{account_id}', response_model=Account)
+async def get_by_id_a_account(account_id: int):
+    statement = select(Account).where(Account.id == account_id)
+    result = session.exec(statement).first()
+
+    return result
+
+
 @app.post('/api/accounts', response_model=Account,
           status_code=status.HTTP_201_CREATED)
 async def create_a_account(account: Account):
@@ -105,6 +113,14 @@ async def get_all_categories():
     return results
 
 
+@app.get('/api/categories/{category_id}', response_model=Category)
+async def get_by_id_a_category(category_id: int):
+    statement = select(Category).where(Category.id == category_id)
+    result = session.exec(statement).first()
+
+    return result
+
+
 @app.post('/api/categories', response_model=Category,
           status_code=status.HTTP_201_CREATED)
 async def create_a_category(category: Category):
@@ -155,6 +171,14 @@ async def get_all_films():
     results = session.exec(statement).all()
 
     return results
+
+
+@app.get('/api/films/{film_id}', response_model=Film)
+async def get_by_id_a_film(film_id: int):
+    statement = select(Film).where(Film.id == film_id)
+    result = session.exec(statement).first()
+
+    return result
 
 
 @app.post('/api/films', response_model=Film,
@@ -221,6 +245,14 @@ async def get_all_seasons():
     return results
 
 
+@app.get('/api/seasons/{season_id}', response_model=Season)
+async def get_by_a_season(season_id: int):
+    statement = select(Season).where(Season.id == season_id)
+    result = session.exec(statement).first()
+
+    return result
+
+
 @app.post('/api/seasons', response_model=Season,
           status_code=status.HTTP_201_CREATED)
 async def create_a_season(season: Season):
@@ -273,6 +305,14 @@ async def get_all_chapters():
     results = session.exec(statement).all()
 
     return results
+
+
+@app.get('/api/chapters/{chapter_id}', response_model=Chapter)
+async def get_by_id_a_chapter(chapter_id: int):
+    statement = select(Chapter).where(Chapter.id == chapter_id)
+    result = session.exec(statement).first()
+
+    return result
 
 
 @app.post('/api/chapters', response_model=Chapter,
@@ -328,6 +368,14 @@ async def get_all_persons():
     results = session.exec(statement).all()
 
     return results
+
+
+@app.get('/api/persons/{person_id}', response_model=Person)
+async def get_by_id_a_person(person_id: int):
+    statement = select(Person).where(Person.id == person_id)
+    result = session.exec(statement).first()
+
+    return result
 
 
 @app.post('/api/persons', response_model=Person,
@@ -388,6 +436,14 @@ async def get_all_roles():
     return results
 
 
+@app.get('/api/roles/{role_id}', response_model=Role)
+async def get_by_id_a_role(role_id: int):
+    statement = select(Role).where(Role.id == role_id)
+    result = session.exec(statement).first()
+
+    return result
+
+
 @app.post('/api/roles', response_model=Role,
           status_code=status.HTTP_201_CREATED)
 async def create_a_role(role: Role):
@@ -440,9 +496,20 @@ async def get_all_films_persons_roles():
     return results
 
 
+@app.get('/api/films-persons-roles/{film_person_role_id}',
+         response_model=FilmPersonRole)
+async def get_by_id_a_film_person_role(film_person_role_id: int):
+    statement = select(FilmPersonRole).where(
+        FilmPersonRole.id == film_person_role_id)
+
+    result = session.exec(statement).first()
+
+    return result
+
+
 @app.post('/api/films-persons-roles', response_model=FilmPersonRole,
           status_code=status.HTTP_201_CREATED)
-async def create_a_role(role: FilmPersonRole):
+async def create_a_film_person_role(role: FilmPersonRole):
     new_role = FilmPersonRole(film_id=role.film_id,
                               person_id=role.person_id,
                               role_id=role.role_id)
@@ -456,8 +523,8 @@ async def create_a_role(role: FilmPersonRole):
 
 @app.put('/api/films-persons-roles/{film_person_role_id}',
          response_model=FilmPersonRole)
-async def update_a_role(film_person_role_id: int,
-                        film_person_role: FilmPersonRole):
+async def update_a_film_person_role(film_person_role_id: int,
+                                    film_person_role: FilmPersonRole):
     statement = select(FilmPersonRole).where(
         FilmPersonRole.id == film_person_role_id)
 
@@ -474,7 +541,7 @@ async def update_a_role(film_person_role_id: int,
 
 @app.delete('/api/films-persons-roles/{film_person_role_id}',
             status_code=status.HTTP_204_NO_CONTENT)
-async def delete_a_role(film_person_role_id: int):
+async def delete_a_film_person_role(film_person_role_id: int):
     statement = select(FilmPersonRole).where(
         FilmPersonRole.id == film_person_role_id)
 
@@ -496,6 +563,14 @@ async def get_all_clients():
     results = session.exec(statement).all()
 
     return results
+
+
+@app.get('/api/clients/{client_id}', response_model=Client)
+async def get_by_id_a_client(client_id: int):
+    statement = select(Client).where(Client.id == client_id)
+    result = session.exec(statement).first()
+
+    return result
 
 
 @app.post('/api/clients', response_model=Client,
@@ -553,6 +628,14 @@ async def get_all_rents():
     results = session.exec(statement).all()
 
     return results
+
+
+@app.get('/api/rents/{rent_id}', response_model=Rent)
+async def get_by_id_a_rent(rent_id: int):
+    statement = select(Rent).where(Rent.id == rent_id)
+    result = session.exec(statement).first()
+
+    return result
 
 
 @app.post('/api/rents', response_model=Rent,
