@@ -29,7 +29,8 @@ class Film(SQLModel, table=True):
     price_by_day: float
     stock: int
     film_type: str
-    film_prequel_id: Optional[int] = Field(default=None, foreign_key="film.id")
+    film_prequel_id: Optional[int] = Field(default=None, nullable=True,
+                                           foreign_key="film.id")
 
 
 class Season(SQLModel, table=True):

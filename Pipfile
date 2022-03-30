@@ -9,6 +9,7 @@ psycopg2-binary = "*"
 sqlmodel = "==0.0.4"
 uvicorn = "==0.15.0"
 asyncpg = "*"
+alembic = "*"
 
 [dev-packages]
 
