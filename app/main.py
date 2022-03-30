@@ -5,8 +5,8 @@ from sqlmodel import Session, select, SQLModel
 from starlette.responses import JSONResponse
 
 from app.db import engine
-from app.models import Category, Account, Film, Season, Chapter, Person, Role, \
-    FilmPersonRole, Rent, Client
+from app.models import (Category, Account, Film, Season, Chapter, Person, Role,
+                        FilmPersonRole, Rent, Client)
 from typing import List
 
 app = FastAPI()
