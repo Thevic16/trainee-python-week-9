@@ -1,10 +1,12 @@
-from fastapi import FastAPI, status
+from fastapi import FastAPI, status, Request
 from fastapi.exceptions import HTTPException
+from sqlalchemy.exc import IntegrityError
 from sqlmodel import Session, select, SQLModel
+from starlette.responses import JSONResponse
 
 from app.db import engine
 from app.models import Category, Account, Film, Season, Chapter, Person, Role, \
-    FilmPersonRole, Rent
+    FilmPersonRole, Rent, Client
 from typing import List
 
 app = FastAPI()
@@ -15,9 +17,25 @@ session = Session(bind=engine)
 SQLModel.metadata.create_all(engine)
 
 
-@app.get("/ping")
-async def pong():
-    return {"ping": "pong!"}
+# Handling Errors
+@app.exception_handler(IntegrityError)
+async def integrityError_exception_handler(request: Request,
+                                           exc: IntegrityError):
+    session.rollback()
+    return JSONResponse(
+        status_code=500,
+        content={"message": f"Integrity Error"},
+    )
+
+
+@app.exception_handler(AttributeError)
+async def attributeError_exception_handler(request: Request,
+                                           exc: AttributeError):
+    session.rollback()
+    return JSONResponse(
+        status_code=500,
+        content={"message": f"Attribute Error"},
+    )
 
 
 # Account Related Routes
@@ -302,6 +320,7 @@ async def delete_a_chapter(chapter_id: int):
     return result
 
 
+# Person Related Routes
 @app.get('/api/persons', response_model=List[Person],
          status_code=status.HTTP_200_OK)
 async def get_all_persons():
@@ -469,15 +488,6 @@ async def delete_a_role(film_person_role_id: int):
 
     return result
 
-from typing import List
-
-from fastapi import HTTPException
-from sqlmodel import select
-from starlette import status
-
-from app.main import app, session
-from app.models import Client
-
 
 @app.get('/api/clients', response_model=List[Client],
          status_code=status.HTTP_200_OK)
@@ -535,6 +545,7 @@ async def delete_a_client(client_id: int):
     return result
 
 
+# Rent Related Routes
 @app.get('/api/rents', response_model=List[Rent],
          status_code=status.HTTP_200_OK)
 async def get_all_rents():
