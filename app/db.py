@@ -1,6 +1,6 @@
 import os
 
-from sqlmodel import create_engine, SQLModel
+from sqlmodel import create_engine
 
 DATABASE_URL = os.environ.get("DATABASE_URL")
 
