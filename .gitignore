@@ -283,3 +283,4 @@ cython_debug/
 # End of https://www.toptal.com/developers/gitignore/api/linux,pycharm,python
 
 plantilla.py
+test_db.sql

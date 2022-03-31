@@ -2,7 +2,7 @@ from datetime import date
 
 from pydantic import validator
 from sqlmodel import SQLModel, Field, Relationship, select, Session
-from typing import Optional
+from typing import Optional, List
 
 from app.db import engine
 from validators import validators
@@ -66,6 +66,13 @@ class FilmBase(SQLModel):
 
 class Film(FilmBase, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
+    availability: Optional[int]
+
+    @staticmethod
+    def get_availability(film_id):
+        statement = select(Film).where(Film.id == film_id)
+        film = session.exec(statement).first()
+        return film.stock - Rent.get_total_amount_by_film_id(film.id)
 
 
 class FilmCreate(FilmBase):
@@ -88,9 +95,7 @@ class FilmCreate(FilmBase):
 
 class FilmRead(FilmBase):
     id: int
-
-    def get_availabiblity(self):
-        pass
+    availability: Optional[int]
 
 
 class SeasonBase(SQLModel):
@@ -100,7 +105,7 @@ class SeasonBase(SQLModel):
                                              foreign_key="season.id")
 
 
-class Season(SeasonBase):
+class Season(SeasonBase, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
 
 
@@ -246,6 +251,19 @@ class RentBase(SQLModel):
 
 class Rent(RentBase, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
+
+    @classmethod
+    def find_all_rents_by_film_id(cls, film_id: int) -> List["Rent"]:
+        statement = select(Rent).where(Rent.film_id == film_id,
+                                       Rent.state == 'open')
+        return session.exec(statement)
+
+    @classmethod
+    def get_total_amount_by_film_id(cls, film_id: id) -> int:
+        total = 0
+        for rent in cls.find_all_rents_by_film_id(film_id):
+            total += rent.amount
+        return total
 
 
 class RentCreate(RentBase):

@@ -179,6 +179,10 @@ async def get_all_films():
     statement = select(Film)
     results = session.exec(statement).all()
 
+    for film in results:
+        if film:
+            film.availability = Film.get_availability(film.id)
+
     return results
 
 
@@ -186,6 +190,9 @@ async def get_all_films():
 async def get_by_id_a_film(film_id: int):
     statement = select(Film).where(Film.id == film_id)
     result = session.exec(statement).first()
+
+    if result:
+        result.availability = Film.get_availability(film_id)
 
     return result
 
@@ -200,7 +207,8 @@ async def create_a_film(film: FilmCreate):
                     price_by_day=film.price_by_day,
                     stock=film.stock,
                     film_type=film.film_type,
-                    film_prequel_id=film.film_prequel_id)
+                    film_prequel_id=film.film_prequel_id,
+                    availability=film.stock)
 
     session.add(new_film)
 
@@ -223,6 +231,8 @@ async def update_a_film(film_id: int, film: FilmCreate):
     result.stock = film.stock
     result.film_type = film.film_type
     result.film_prequel_id = film.film_prequel_id
+    if result:
+        result.availability = Film.get_availability(film_id)
 
     session.commit()
 
