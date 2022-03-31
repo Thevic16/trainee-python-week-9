@@ -5,6 +5,7 @@ from sqlmodel import SQLModel, Field, Relationship, select, Session
 from typing import Optional, List
 
 from app.db import engine
+from business_logic.business_logic import PersonBusinessLogic
 from validators import validators
 
 session = Session(bind=engine)
@@ -149,6 +150,11 @@ class PersonBase(SQLModel):
 
 class Person(PersonBase, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
+    age: Optional[int]
+
+    @staticmethod
+    def get_age(date_of_birth):
+        return PersonBusinessLogic.get_age_by_birthday(date_of_birth)
 
 
 class PersonCreate(PersonBase):
@@ -167,6 +173,7 @@ class PersonCreate(PersonBase):
 
 class PersonRead(PersonBase):
     id: int
+    age: Optional[int]
 
 
 class RoleBase(SQLModel):

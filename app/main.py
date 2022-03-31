@@ -182,6 +182,7 @@ async def get_all_films():
     for film in results:
         if film:
             film.availability = Film.get_availability(film.id)
+            session.commit()
 
     return results
 
@@ -193,6 +194,7 @@ async def get_by_id_a_film(film_id: int):
 
     if result:
         result.availability = Film.get_availability(film_id)
+        session.commit()
 
     return result
 
@@ -403,7 +405,8 @@ async def create_a_person(person: PersonCreate):
                         lastname=person.lastname,
                         gender=person.gender,
                         date_of_birth=person.date_of_birth,
-                        person_type=person.person_type)
+                        person_type=person.person_type,
+                        age=Person.get_age(person.date_of_birth))
 
     session.add(new_person)
 
@@ -423,6 +426,8 @@ async def update_a_person(person_id: int, person: PersonCreate):
     result.gender = person.gender
     result.date_of_birth = person.date_of_birth
     result.person_type = person.person_type
+    if result:
+        result.age = Person.get_age(result.date_of_birth)
 
     session.commit()
 
