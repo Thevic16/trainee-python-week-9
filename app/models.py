@@ -63,6 +63,12 @@ class FilmBase(SQLModel):
     film_prequel_id: Optional[int] = Field(default=None, nullable=True,
                                            foreign_key="film.id")
 
+
+class Film(FilmBase, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+
+
+class FilmCreate(FilmBase):
     @validator('release_date')
     def validate_release_date(cls, v):
         return validators.validator_date_limit_today(v)
@@ -80,16 +86,11 @@ class FilmBase(SQLModel):
         return validators.validate_film_type(v)
 
 
-class Film(FilmBase, table=True):
-    id: Optional[int] = Field(default=None, primary_key=True)
-
-
-class FilmCreate(FilmBase):
-    pass
-
-
 class FilmRead(FilmBase):
     id: int
+
+    def get_availabiblity(self):
+        pass
 
 
 class SeasonBase(SQLModel):
@@ -140,6 +141,12 @@ class PersonBase(SQLModel):
 
     client: Optional["Client"] = Relationship(back_populates="person")
 
+
+class Person(PersonBase, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+
+
+class PersonCreate(PersonBase):
     @validator('gender')
     def validate_gender(cls, v):
         return validators.validate_gender(v)
@@ -151,14 +158,6 @@ class PersonBase(SQLModel):
     @validator('person_type')
     def validate_person_type(cls, v):
         return validators.validate_person_type(v)
-
-
-class Person(PersonBase, table=True):
-    id: Optional[int] = Field(default=None, primary_key=True)
-
-
-class PersonCreate(PersonBase):
-    pass
 
 
 class PersonRead(PersonBase):
@@ -208,6 +207,12 @@ class ClientBase(SQLModel):
 
     person: Person = Relationship(back_populates="client")
 
+
+class Client(ClientBase, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+
+
+class ClientCreate(ClientBase):
     @validator('email')
     def validate_email(cls, v):
         return validators.validate_email(v)
@@ -224,14 +229,6 @@ class ClientBase(SQLModel):
         return v
 
 
-class Client(ClientBase, table=True):
-    id: Optional[int] = Field(default=None, primary_key=True)
-
-
-class ClientCreate(ClientBase):
-    pass
-
-
 class ClientRead(ClientBase):
     id: int
 
@@ -246,6 +243,12 @@ class RentBase(SQLModel):
     actual_return_date: Optional[date]
     state: str
 
+
+class Rent(RentBase, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+
+
+class RentCreate(RentBase):
     @validator('amount')
     def validate_amount(cls, v):
         return validators.validator_no_negative(v)
@@ -268,14 +271,6 @@ class RentBase(SQLModel):
     @validator('state')
     def validate_state(cls, v):
         return validators.validate_rent_state(v)
-
-
-class Rent(RentBase, table=True):
-    id: Optional[int] = Field(default=None, primary_key=True)
-
-
-class RentCreate(RentBase):
-    pass
 
 
 class RentRead(RentBase):
