@@ -9,6 +9,8 @@ from app.models import (Category, Account, Film, Season, Chapter, Person, Role,
                         FilmPersonRole, Rent, Client)
 from typing import List
 
+from utilities.logger import Logger
+
 app = FastAPI()
 
 session = Session(bind=engine)
@@ -22,9 +24,10 @@ SQLModel.metadata.create_all(engine)
 async def integrityError_exception_handler(request: Request,
                                            exc: IntegrityError):
     session.rollback()
+    Logger.error(f"Integrity Error: {exc}")
     return JSONResponse(
         status_code=500,
-        content={"message": f"Integrity Error"},
+        content={"message": f"Integrity Error: {exc.orig}"},
     )
 
 
@@ -32,9 +35,10 @@ async def integrityError_exception_handler(request: Request,
 async def attributeError_exception_handler(request: Request,
                                            exc: AttributeError):
     session.rollback()
+    Logger.error(f"AttributeError: {exc}")
     return JSONResponse(
         status_code=500,
-        content={"message": f"Attribute Error"},
+        content={"message": f"Attribute Error {exc.name}"},
     )
 
 

@@ -11,6 +11,8 @@ def validate_email(email):
     if not re.match("[^@]+@[^@]+\.[^@]+", email):
         raise AssertionError('Provided email is not an email address')
 
+    return email
+
 
 def validate_phone(phone):
     if not phone:
@@ -18,31 +20,37 @@ def validate_phone(phone):
     if not re.match("\d{3}-\d{4}-\d{4}$", phone):
         raise AssertionError('Provided phone is not an valid please use'
                              'the following format (XXX-XXXX-XXXX)')
+    return phone
 
 
 def validate_film_type(film_type):
     if film_type not in ('movie', 'serie'):
         raise AssertionError('film_type should be movie or serie')
+    return film_type
 
 
 def validate_gender(gender):
     if gender not in ('male', 'feminine'):
         raise AssertionError('gender should be male or feminine')
+    return gender
 
 
 def validate_person_type(person_type):
     if person_type not in ('film related', 'client'):
         raise AssertionError('person_type should be film related or client')
+    return person_type
 
 
 def validate_person_type_client(person_type):
     if person_type != 'client':
         raise AssertionError('person_type should be client')
+    return person_type
 
 
 def validate_rent_state(film_type):
     if film_type not in ('open', 'close'):
         raise AssertionError('state should be open or close')
+    return film_type
 
 
 # Film Validators

@@ -1,6 +1,8 @@
 import logging
 import os
 
+from dotenv import load_dotenv
+
 
 class Logger:
     """
@@ -52,13 +54,16 @@ class Logger:
         Returns:
             logger (logging.Logger): Logger
         """
+        # Initialize environ
+        # Load virtual variables
+        load_dotenv()  # take environment variables from .env.
 
-        # Create todo list logger
-        logger_app_file = logging.getLogger("Todo list file")
+        # Create Film Rental System list logger
+        logger_app_file = logging.getLogger("Film Rental System file")
 
         try:
             # Create handler
-            handler_file = logging.FileHandler(os.environ.get('LOG_FILE_PATH'))
+            handler_file = logging.FileHandler(os.getenv('LOG_FILE_PATH'))
 
         except FileNotFoundError:
             print("app.log file not found.")
@@ -75,8 +80,9 @@ class Logger:
         Returns:
             logger (logging.Logger): Logger
         """
-        # Create todo list logger
-        logger_app_terminal = logging.getLogger("Todo list terminal")
+        # Create Film Rental System list logger
+        logger_app_terminal = logging.getLogger("Film Rental System"
+                                                " list terminal")
         logger_app_terminal.setLevel(logging.DEBUG)
 
         # Create handler
