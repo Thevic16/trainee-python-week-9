@@ -167,7 +167,7 @@ class Rent(SQLModel, table=True):
         validators.RentValidation.validate_date1_gr_or_eq_date2(
             v, values['start_date'], 'actual_return_date')
         return v
-    
+
     @validator('state')
     def validate_state(cls, v):
         return validators.validate_rent_state(v)
