@@ -670,7 +670,8 @@ async def create_a_rent(rent: RentCreate):
                     start_date=rent.start_date,
                     return_date=rent.return_date,
                     actual_return_date=rent.actual_return_date,
-                    state=rent.state)
+                    state=rent.state,
+                    cost=Rent.get_cost(rent))
 
     session.add(new_rent)
 
@@ -692,6 +693,8 @@ async def update_a_rent(rent_id: int, rent: RentCreate):
     result.return_date = rent.return_date
     result.actual_return_date = rent.actual_return_date
     result.state = rent.state
+    if result:
+        result.cost = Rent.get_cost(rent)
 
     session.commit()
 

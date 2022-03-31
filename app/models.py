@@ -5,7 +5,8 @@ from sqlmodel import SQLModel, Field, Relationship, select, Session
 from typing import Optional, List
 
 from app.db import engine
-from business_logic.business_logic import PersonBusinessLogic
+from business_logic.business_logic import PersonBusinessLogic, \
+    RentBusinessLogic
 from validators import validators
 
 session = Session(bind=engine)
@@ -68,6 +69,8 @@ class FilmBase(SQLModel):
 class Film(FilmBase, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     availability: Optional[int]
+
+    rent: "Rent" = Relationship(back_populates="film")
 
     @staticmethod
     def get_availability(film_id):
@@ -258,6 +261,9 @@ class RentBase(SQLModel):
 
 class Rent(RentBase, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
+    cost: Optional[float]
+
+    film: Film = Relationship(back_populates="rent")
 
     @classmethod
     def find_all_rents_by_film_id(cls, film_id: int) -> List["Rent"]:
@@ -271,6 +277,16 @@ class Rent(RentBase, table=True):
         for rent in cls.find_all_rents_by_film_id(film_id):
             total += rent.amount
         return total
+
+    @staticmethod
+    def get_cost(rent: "Rent") -> float:
+        statement = select(Film).where(Film.id == rent.film_id)
+        film = session.exec(statement).first()
+
+        return RentBusinessLogic.get_rent_cost(rent.amount, rent.start_date,
+                                               rent.return_date,
+                                               rent.actual_return_date,
+                                               film.price_by_day)
 
 
 class RentCreate(RentBase):
@@ -300,3 +316,4 @@ class RentCreate(RentBase):
 
 class RentRead(RentBase):
     id: int
+    cost: Optional[float]
