@@ -7,13 +7,11 @@ from typing import Optional
 from app.db import engine
 from validators import validators
 
-
 session = Session(bind=engine)
 
 
 # Account related models
-class Account(SQLModel, table=True):
-    id: Optional[int] = Field(default=None, primary_key=True)
+class AccountBase(SQLModel):
     email: str
     password: str
     is_admin: bool
@@ -24,19 +22,41 @@ class Account(SQLModel, table=True):
         return validators.validate_email(v)
 
 
-# Film related models
-class Category(SQLModel, table=True):
+class Account(AccountBase, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
+
+
+class AccountCreate(AccountBase):
+    pass
+
+
+class AccountRead(AccountBase):
+    id: int
+
+
+# Film related models
+class CategoryBase(SQLModel):
     name: str
     description: str
 
 
-class Film(SQLModel, table=True):
+class Category(CategoryBase, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
+
+
+class CategoryCreate(CategoryBase):
+    pass
+
+
+class CategoryRead(CategoryBase):
+    id: int
+
+
+class FilmBase(SQLModel):
     title: str
     description: str
     release_date: date
-    category_id: int = Field(default=None, foreign_key="category.id")
+    category_id: int = Field(foreign_key="category.id")
     price_by_day: float
     stock: int
     film_type: str
@@ -60,25 +80,58 @@ class Film(SQLModel, table=True):
         return validators.validate_film_type(v)
 
 
-class Season(SQLModel, table=True):
+class Film(FilmBase, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
-    film_id: int = Field(default=None, foreign_key="film.id")
+
+
+class FilmCreate(FilmBase):
+    pass
+
+
+class FilmRead(FilmBase):
+    id: int
+
+
+class SeasonBase(SQLModel):
+    film_id: int = Field(foreign_key="film.id")
     title: str
     season_prequel_id: Optional[int] = Field(default=None,
                                              foreign_key="season.id")
 
 
-class Chapter(SQLModel, table=True):
+class Season(SeasonBase):
     id: Optional[int] = Field(default=None, primary_key=True)
-    season_id: int = Field(default=None, foreign_key="season.id")
+
+
+class SeasonCreate(SeasonBase):
+    pass
+
+
+class SeasonRead(SeasonBase):
+    id: int
+
+
+class ChapterBase(SQLModel):
+    season_id: int = Field(foreign_key="season.id")
     title: str
     chapter_prequel_id: Optional[int] = Field(default=None,
                                               foreign_key="chapter.id")
 
 
-# Person related models
-class Person(SQLModel, table=True):
+class Chapter(ChapterBase, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
+
+
+class ChapterCreate(ChapterBase):
+    pass
+
+
+class ChapterRead(ChapterBase):
+    id: int
+
+
+# Person related models
+class PersonBase(SQLModel):
     name: str
     lastname: str
     gender: str
@@ -100,22 +153,55 @@ class Person(SQLModel, table=True):
         return validators.validate_person_type(v)
 
 
-class Role(SQLModel, table=True):
+class Person(PersonBase, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
+
+
+class PersonCreate(PersonBase):
+    pass
+
+
+class PersonRead(PersonBase):
+    id: int
+
+
+class RoleBase(SQLModel):
     name: str
     description: str
 
 
-class FilmPersonRole(SQLModel, table=True):
+class Role(RoleBase, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
-    film_id: int = Field(default=None, foreign_key="film.id")
-    person_id: int = Field(default=None, foreign_key="person.id")
-    role_id: int = Field(default=None, foreign_key="role.id")
 
 
-class Client(SQLModel, table=True):
+class RoleCreate(RoleBase):
+    pass
+
+
+class RoleRead(RoleBase):
+    id: int
+
+
+class FilmPersonRoleBase(SQLModel):
+    film_id: int = Field(foreign_key="film.id")
+    person_id: int = Field(foreign_key="person.id")
+    role_id: int = Field(foreign_key="role.id")
+
+
+class FilmPersonRole(FilmPersonRoleBase, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
-    person_id: int = Field(default=None, foreign_key="person.id")
+
+
+class FilmPersonRoleCreate(FilmPersonRoleBase):
+    pass
+
+
+class FilmPersonRoleRead(FilmPersonRoleBase):
+    id: int
+
+
+class ClientBase(SQLModel):
+    person_id: int = Field(foreign_key="person.id")
     direction: str
     phone: str
     email: str
@@ -138,11 +224,22 @@ class Client(SQLModel, table=True):
         return v
 
 
-# Rent related model
-class Rent(SQLModel, table=True):
+class Client(ClientBase, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
-    film_id: int = Field(default=None, foreign_key="film.id")
-    client_id: int = Field(default=None, foreign_key="client.id")
+
+
+class ClientCreate(ClientBase):
+    pass
+
+
+class ClientRead(ClientBase):
+    id: int
+
+
+# Rent related model
+class RentBase(SQLModel):
+    film_id: int = Field(foreign_key="film.id")
+    client_id: int = Field(foreign_key="client.id")
     amount: int
     start_date: date
     return_date: date
@@ -171,3 +268,15 @@ class Rent(SQLModel, table=True):
     @validator('state')
     def validate_state(cls, v):
         return validators.validate_rent_state(v)
+
+
+class Rent(RentBase, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+
+
+class RentCreate(RentBase):
+    pass
+
+
+class RentRead(RentBase):
+    id: int
