@@ -1,20 +1,28 @@
-from fastapi import FastAPI, status, Request
+from fastapi import FastAPI, status, Request, Depends
 from fastapi.exceptions import HTTPException
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from jwt import ExpiredSignatureError, InvalidSignatureError
 from sqlalchemy.exc import IntegrityError
 from sqlmodel import Session, select, SQLModel
 from starlette.responses import JSONResponse
 
 from app.db import engine
-from app.models import (Category, Account, Film, Season, Chapter, Person, Role,
-                        FilmPersonRole, Rent, Client, AccountRead,
-                        AccountCreate, CategoryRead, CategoryCreate, FilmRead,
+from app.models import (Category, User, Film, Season, Chapter, Person, Role,
+                        FilmPersonRole, Rent, Client, UserRead,
+                        UserCreate, CategoryRead, CategoryCreate, FilmRead,
                         FilmCreate, SeasonRead, SeasonCreate, ChapterRead,
                         ChapterCreate, PersonCreate, PersonRead, RoleCreate,
                         RoleRead, FilmPersonRoleCreate, FilmPersonRoleRead,
-                        ClientRead, ClientCreate, RentCreate, RentRead)
+                        ClientRead, ClientCreate, RentCreate, RentRead,
+                        TokenData, Token)
 from typing import List
 
 from utilities.logger import Logger
+
+# JWT imports
+from passlib.context import CryptContext
+from datetime import datetime, timedelta
+import jwt
 
 app = FastAPI()
 
@@ -23,8 +31,101 @@ session = Session(bind=engine)
 # Creating database
 SQLModel.metadata.create_all(engine)
 
+# JWT -------------------------------------------------------------------------
+SECRET_KEY = "09d25e094faa6ca2556c818166b7a9563b93f7099f6f0f4caa6cf63b88e8d3e7"
+ALGORITHM = "HS256"
+ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
-# Handling Errors
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+
+
+def verify_password(plain_password, hashed_password):
+    return pwd_context.verify(plain_password, hashed_password)
+
+
+def get_password_hash(password):
+    return pwd_context.hash(password)
+
+
+def authenticate_user(username: str, password: str):
+    statement = select(User).where(User.username == username)
+    user = session.exec(statement).first()
+    if not user:
+        return False
+    if not verify_password(password, user.password):
+        return False
+    return user
+
+
+def create_access_token(data: dict, expires_delta: timedelta):
+    to_encode = data.copy()
+    if expires_delta:
+        expire = datetime.utcnow() + expires_delta
+    else:
+        expire = datetime.utcnow() + timedelta(minutes=15)
+    to_encode.update({"exp": expire})
+    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+    return encoded_jwt
+
+
+async def get_current_user(token: str = Depends(oauth2_scheme)):
+    credentials_exception = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Could not validate credentials",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        username: str = payload.get("sub")
+        if username is None:
+            raise credentials_exception
+        token_data = TokenData(username=username)
+    except ExpiredSignatureError:
+        raise credentials_exception
+    except InvalidSignatureError:
+        raise credentials_exception
+    statement = select(User).where(User.username == token_data.username)
+    user = session.exec(statement).first()
+    if user is None:
+        raise credentials_exception
+    return user
+
+
+@app.post("/token", response_model=Token)
+async def login_for_access_token(
+        form_data: OAuth2PasswordRequestForm = Depends()):
+    user = authenticate_user(form_data.username, form_data.password)
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Incorrect username or password",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token = create_access_token(
+        data={"sub": user.username}, expires_delta=access_token_expires
+    )
+    return {"access_token": access_token, "token_type": "bearer"}
+
+
+# JWT permissions
+async def get_admin_user(
+        admin_user: User = Depends(get_current_user)):
+    if not admin_user.is_admin:
+        raise HTTPException(status_code=400, detail="Not admin user")
+    return admin_user
+
+
+async def get_admin_or_employee_user(
+        user: User = Depends(get_current_user)):
+    if not user.is_admin and not user.is_employee:
+        raise HTTPException(status_code=400, detail="Inactive user")
+    return user
+
+
+# Handling Errors--------------------------------------------------------------
 @app.exception_handler(IntegrityError)
 async def integrityError_exception_handler(request: Request,
                                            exc: IntegrityError):
@@ -47,60 +148,63 @@ async def attributeError_exception_handler(request: Request,
     )
 
 
-# Account Related Routes
-@app.get('/api/accounts', response_model=List[AccountRead],
-         status_code=status.HTTP_200_OK)
-async def get_all_accounts():
-    statement = select(Account)
+# User Related Routes
+@app.get('/api/users', response_model=List[UserRead],
+         status_code=status.HTTP_200_OK,
+         dependencies=[Depends(get_admin_user)])
+async def get_all_users():
+    statement = select(User)
     results = session.exec(statement).all()
 
     return results
 
 
-@app.get('/api/accounts/{account_id}', response_model=AccountRead)
-async def get_by_id_a_account(account_id: int):
-    statement = select(Account).where(Account.id == account_id)
+@app.get('/api/users/{user_id}', response_model=UserRead,
+         dependencies=[Depends(get_admin_user)])
+async def get_by_id_a_user(user_id: int):
+    statement = select(User).where(User.id == user_id)
     result = session.exec(statement).first()
 
     return result
 
 
-@app.post('/api/accounts', response_model=AccountRead,
+@app.post('/api/users', response_model=UserRead,
           status_code=status.HTTP_201_CREATED)
-async def create_a_account(account: AccountCreate):
-    new_account = Account(email=account.email,
-                          password=account.password,
-                          is_admin=account.is_admin,
-                          is_employee=account.is_employee)
+async def create_a_user(user: UserCreate):
+    new_user = User(username=user.username,
+                    password=get_password_hash(user.password),
+                    is_admin=user.is_admin,
+                    is_employee=user.is_employee)
 
-    session.add(new_account)
+    session.add(new_user)
 
     session.commit()
 
-    return new_account
+    return new_user
 
 
-@app.put('/api/accounts/{account_id}', response_model=AccountRead)
-async def update_a_account(account_id: int, account: AccountCreate):
-    statement = select(Account).where(Account.id == account_id)
+@app.put('/api/users/{user_id}', response_model=UserRead,
+         dependencies=[Depends(get_admin_user)])
+async def update_a_user(user_id: int, user: UserCreate):
+    statement = select(User).where(User.id == user_id)
 
     result = session.exec(statement).first()
 
-    result.email = account.email
-    result.password = account.password
-    result.is_admin = account.is_admin
-    result.is_employee = account.is_employee
+    result.username = user.username
+    result.password = get_password_hash(user.password)
+    result.is_admin = user.is_admin
+    result.is_employee = user.is_employee
 
     session.commit()
 
     return result
 
 
-@app.delete('/api/accounts/{account_id}',
-            status_code=status.HTTP_204_NO_CONTENT)
-async def delete_a_account(account_id: int):
-    statement = select(Account).where(Account.id == account_id)
-
+@app.delete('/api/users/{user_id}',
+            status_code=status.HTTP_204_NO_CONTENT,
+            dependencies=[Depends(get_admin_user)])
+async def delete_a_user(user_id: int):
+    statement = select(User).where(User.id == user_id)
     result = session.exec(statement).one_or_none()
 
     if result is None:
@@ -131,7 +235,8 @@ async def get_by_id_a_category(category_id: int):
 
 
 @app.post('/api/categories', response_model=CategoryRead,
-          status_code=status.HTTP_201_CREATED)
+          status_code=status.HTTP_201_CREATED,
+          dependencies=[Depends(get_admin_user)])
 async def create_a_category(category: CategoryCreate):
     new_category = Category(name=category.name,
                             description=category.description)
@@ -143,7 +248,8 @@ async def create_a_category(category: CategoryCreate):
     return new_category
 
 
-@app.put('/api/categories/{category_id}', response_model=CategoryRead)
+@app.put('/api/categories/{category_id}', response_model=CategoryRead,
+         dependencies=[Depends(get_admin_user)])
 async def update_a_category(category_id: int, category: CategoryCreate):
     statement = select(Category).where(Category.id == category_id)
 
@@ -158,7 +264,8 @@ async def update_a_category(category_id: int, category: CategoryCreate):
 
 
 @app.delete('/api/categories/{category_id}',
-            status_code=status.HTTP_204_NO_CONTENT)
+            status_code=status.HTTP_204_NO_CONTENT,
+            dependencies=[Depends(get_admin_user)])
 async def delete_a_category(category_id: int):
     statement = select(Category).where(Category.id == category_id)
 
@@ -200,7 +307,8 @@ async def get_by_id_a_film(film_id: int):
 
 
 @app.post('/api/films', response_model=FilmRead,
-          status_code=status.HTTP_201_CREATED)
+          status_code=status.HTTP_201_CREATED,
+          dependencies=[Depends(get_admin_user)])
 async def create_a_film(film: FilmCreate):
     new_film = Film(title=film.title,
                     description=film.description,
@@ -219,7 +327,8 @@ async def create_a_film(film: FilmCreate):
     return new_film
 
 
-@app.put('/api/films/{film_id}', response_model=FilmRead)
+@app.put('/api/films/{film_id}', response_model=FilmRead,
+         dependencies=[Depends(get_admin_user)])
 async def update_a_film(film_id: int, film: FilmCreate):
     statement = select(Film).where(Film.id == film_id)
 
@@ -242,7 +351,8 @@ async def update_a_film(film_id: int, film: FilmCreate):
 
 
 @app.delete('/api/films/{film_id}',
-            status_code=status.HTTP_204_NO_CONTENT)
+            status_code=status.HTTP_204_NO_CONTENT,
+            dependencies=[Depends(get_admin_user)])
 async def delete_a_film(film_id: int):
     statement = select(Film).where(Film.id == film_id)
 
@@ -275,7 +385,8 @@ async def get_by_a_season(season_id: int):
 
 
 @app.post('/api/seasons', response_model=SeasonRead,
-          status_code=status.HTTP_201_CREATED)
+          status_code=status.HTTP_201_CREATED,
+          dependencies=[Depends(get_admin_user)])
 async def create_a_season(season: SeasonCreate):
     new_season = Season(film_id=season.film_id,
                         title=season.title,
@@ -287,7 +398,8 @@ async def create_a_season(season: SeasonCreate):
     return new_season
 
 
-@app.put('/api/seasons/{season_id}', response_model=SeasonRead)
+@app.put('/api/seasons/{season_id}', response_model=SeasonRead,
+         dependencies=[Depends(get_admin_user)])
 async def update_a_season(season_id: int, season: SeasonCreate):
     statement = select(Season).where(Season.id == season_id)
 
@@ -303,7 +415,8 @@ async def update_a_season(season_id: int, season: SeasonCreate):
 
 
 @app.delete('/api/seasons/{season_id}',
-            status_code=status.HTTP_204_NO_CONTENT)
+            status_code=status.HTTP_204_NO_CONTENT,
+            dependencies=[Depends(get_admin_user)])
 async def delete_a_season(season_id: int):
     statement = select(Season).where(Season.id == season_id)
 
@@ -336,7 +449,8 @@ async def get_by_id_a_chapter(chapter_id: int):
 
 
 @app.post('/api/chapters', response_model=ChapterRead,
-          status_code=status.HTTP_201_CREATED)
+          status_code=status.HTTP_201_CREATED,
+          dependencies=[Depends(get_admin_user)])
 async def create_a_chapter(chapter: ChapterCreate):
     new_chapter = Chapter(season_id=chapter.season_id,
                           title=chapter.title,
@@ -349,7 +463,8 @@ async def create_a_chapter(chapter: ChapterCreate):
     return new_chapter
 
 
-@app.put('/api/chapters/{chapter_id}', response_model=ChapterRead)
+@app.put('/api/chapters/{chapter_id}', response_model=ChapterRead,
+         dependencies=[Depends(get_admin_user)])
 async def update_a_chapter(chapter_id: int, chapter: ChapterCreate):
     statement = select(Chapter).where(Chapter.id == chapter_id)
 
@@ -365,7 +480,8 @@ async def update_a_chapter(chapter_id: int, chapter: ChapterCreate):
 
 
 @app.delete('/api/chapters/{chapter_id}',
-            status_code=status.HTTP_204_NO_CONTENT)
+            status_code=status.HTTP_204_NO_CONTENT,
+            dependencies=[Depends(get_admin_user)])
 async def delete_a_chapter(chapter_id: int):
     statement = select(Chapter).where(Chapter.id == chapter_id)
 
@@ -399,7 +515,8 @@ async def get_by_id_a_person(person_id: int):
 
 
 @app.post('/api/persons', response_model=PersonRead,
-          status_code=status.HTTP_201_CREATED)
+          status_code=status.HTTP_201_CREATED,
+          dependencies=[Depends(get_admin_user)])
 async def create_a_person(person: PersonCreate):
     new_person = Person(name=person.name,
                         lastname=person.lastname,
@@ -415,7 +532,8 @@ async def create_a_person(person: PersonCreate):
     return new_person
 
 
-@app.put('/api/persons/{person_id}', response_model=PersonRead)
+@app.put('/api/persons/{person_id}', response_model=PersonRead,
+         dependencies=[Depends(get_admin_user)])
 async def update_a_person(person_id: int, person: PersonCreate):
     statement = select(Person).where(Person.id == person_id)
 
@@ -435,7 +553,8 @@ async def update_a_person(person_id: int, person: PersonCreate):
 
 
 @app.delete('/api/persons/{person_id}',
-            status_code=status.HTTP_204_NO_CONTENT)
+            status_code=status.HTTP_204_NO_CONTENT,
+            dependencies=[Depends(get_admin_user)])
 async def delete_a_person(person_id: int):
     statement = select(Person).where(Person.id == person_id)
 
@@ -468,7 +587,8 @@ async def get_by_id_a_role(role_id: int):
 
 
 @app.post('/api/roles', response_model=RoleRead,
-          status_code=status.HTTP_201_CREATED)
+          status_code=status.HTTP_201_CREATED,
+          dependencies=[Depends(get_admin_user)])
 async def create_a_role(role: RoleCreate):
     new_role = Role(name=role.name,
                     description=role.description)
@@ -480,7 +600,8 @@ async def create_a_role(role: RoleCreate):
     return new_role
 
 
-@app.put('/api/roles/{role_id}', response_model=RoleRead)
+@app.put('/api/roles/{role_id}', response_model=RoleRead,
+         dependencies=[Depends(get_admin_user)])
 async def update_a_role(role_id: int, role: RoleCreate):
     statement = select(Role).where(Role.id == role_id)
 
@@ -495,7 +616,8 @@ async def update_a_role(role_id: int, role: RoleCreate):
 
 
 @app.delete('/api/roles/{role_id}',
-            status_code=status.HTTP_204_NO_CONTENT)
+            status_code=status.HTTP_204_NO_CONTENT,
+            dependencies=[Depends(get_admin_user)])
 async def delete_a_role(role_id: int):
     statement = select(Role).where(Role.id == role_id)
 
@@ -531,7 +653,8 @@ async def get_by_id_a_film_person_role(film_person_role_id: int):
 
 
 @app.post('/api/films-persons-roles', response_model=FilmPersonRoleRead,
-          status_code=status.HTTP_201_CREATED)
+          status_code=status.HTTP_201_CREATED,
+          dependencies=[Depends(get_admin_user)])
 async def create_a_film_person_role(role: FilmPersonRoleCreate):
     new_role = FilmPersonRole(film_id=role.film_id,
                               person_id=role.person_id,
@@ -545,7 +668,8 @@ async def create_a_film_person_role(role: FilmPersonRoleCreate):
 
 
 @app.put('/api/films-persons-roles/{film_person_role_id}',
-         response_model=FilmPersonRoleRead)
+         response_model=FilmPersonRoleRead,
+         dependencies=[Depends(get_admin_user)])
 async def update_a_film_person_role(film_person_role_id: int,
                                     film_person_role: FilmPersonRoleCreate):
     statement = select(FilmPersonRole).where(
@@ -563,7 +687,8 @@ async def update_a_film_person_role(film_person_role_id: int,
 
 
 @app.delete('/api/films-persons-roles/{film_person_role_id}',
-            status_code=status.HTTP_204_NO_CONTENT)
+            status_code=status.HTTP_204_NO_CONTENT,
+            dependencies=[Depends(get_admin_user)])
 async def delete_a_film_person_role(film_person_role_id: int):
     statement = select(FilmPersonRole).where(
         FilmPersonRole.id == film_person_role_id)
@@ -597,7 +722,8 @@ async def get_by_id_a_client(client_id: int):
 
 
 @app.post('/api/clients', response_model=ClientRead,
-          status_code=status.HTTP_201_CREATED)
+          status_code=status.HTTP_201_CREATED,
+          dependencies=[Depends(get_admin_user)])
 async def create_a_client(client: ClientCreate):
     new_client = Client(person_id=client.person_id,
                         direction=client.direction,
@@ -611,7 +737,8 @@ async def create_a_client(client: ClientCreate):
     return new_client
 
 
-@app.put('/api/clients/{client_id}', response_model=ClientRead)
+@app.put('/api/clients/{client_id}', response_model=ClientRead,
+         dependencies=[Depends(get_admin_user)])
 async def update_a_client(client_id: int, client: Client):
     statement = select(Client).where(Client.id == client_id)
 
@@ -628,7 +755,8 @@ async def update_a_client(client_id: int, client: Client):
 
 
 @app.delete('/api/clients/{client_id}',
-            status_code=status.HTTP_204_NO_CONTENT)
+            status_code=status.HTTP_204_NO_CONTENT,
+            dependencies=[Depends(get_admin_user)])
 async def delete_a_client(client_id: int):
     statement = select(Client).where(Client.id == client_id)
 
@@ -662,7 +790,8 @@ async def get_by_id_a_rent(rent_id: int):
 
 
 @app.post('/api/rents', response_model=RentRead,
-          status_code=status.HTTP_201_CREATED)
+          status_code=status.HTTP_201_CREATED,
+          dependencies=[Depends(get_admin_or_employee_user)])
 async def create_a_rent(rent: RentCreate):
     new_rent = Rent(film_id=rent.film_id,
                     client_id=rent.client_id,
@@ -680,7 +809,8 @@ async def create_a_rent(rent: RentCreate):
     return new_rent
 
 
-@app.put('/api/rents/{rent_id}', response_model=RentRead)
+@app.put('/api/rents/{rent_id}', response_model=RentRead,
+         dependencies=[Depends(get_admin_or_employee_user)])
 async def update_a_rent(rent_id: int, rent: RentCreate):
     statement = select(Rent).where(Rent.id == rent_id)
 
@@ -702,7 +832,8 @@ async def update_a_rent(rent_id: int, rent: RentCreate):
 
 
 @app.delete('/api/rents/{rent_id}',
-            status_code=status.HTTP_204_NO_CONTENT)
+            status_code=status.HTTP_204_NO_CONTENT,
+            dependencies=[Depends(get_admin_or_employee_user)])
 async def delete_a_rent(rent_id: int):
     statement = select(Rent).where(Rent.id == rent_id)
 

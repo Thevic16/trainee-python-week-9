@@ -12,27 +12,37 @@ from validators import validators
 session = Session(bind=engine)
 
 
-# Account related models
-class AccountBase(SQLModel):
-    email: str
+# Token related models
+class Token(SQLModel):
+    access_token: str
+    token_type: str
+
+
+class TokenData(SQLModel):
+    username: Optional[str]
+
+
+# User related models
+class UserBase(SQLModel):
+    username: str
     password: str
     is_admin: bool
     is_employee: bool
 
-    @validator('email')
+    @validator('username')
     def validate_email(cls, v):
         return validators.validate_email(v)
 
 
-class Account(AccountBase, table=True):
+class User(UserBase, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
 
 
-class AccountCreate(AccountBase):
+class UserCreate(UserBase):
     pass
 
 
-class AccountRead(AccountBase):
+class UserRead(UserBase):
     id: int
 
 

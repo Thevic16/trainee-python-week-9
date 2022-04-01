@@ -11,6 +11,9 @@ uvicorn = "==0.15.0"
 asyncpg = "*"
 alembic = "*"
 python-dotenv = "*"
+passlib = "*"
+pyjwt = "*"
+python-multipart = "*"
 
 [dev-packages]
 
