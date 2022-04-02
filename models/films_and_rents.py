@@ -7,13 +7,14 @@ from business_logic.business_logic import RentBusinessLogic
 from database.db import get_db_session
 from pydantic import validator
 from validators import validators
+from sqlalchemy import Column, String, Integer
 
 session = get_db_session()
 
 
 # Film related models
 class CategoryBase(SQLModel):
-    name: str
+    name: str = Field(sa_column=Column("name", String, unique=True))
     description: str
 
 
@@ -38,7 +39,10 @@ class FilmBase(SQLModel):
     stock: int
     film_type: str
     film_prequel_id: Optional[int] = Field(default=None, nullable=True,
-                                           foreign_key="film.id")
+                                           foreign_key="film.id",
+                                           sa_column=Column("film_prequel_id",
+                                                            Integer,
+                                                            unique=True))
 
 
 class Film(FilmBase, table=True):
@@ -79,9 +83,13 @@ class FilmRead(FilmBase):
 
 class SeasonBase(SQLModel):
     film_id: int = Field(foreign_key="film.id")
-    title: str
+    title: str = Field(sa_column=Column("title", String, unique=True))
     season_prequel_id: Optional[int] = Field(default=None,
-                                             foreign_key="season.id")
+                                             foreign_key="season.id",
+                                             sa_column=
+                                             Column("season_prequel_id",
+                                                    Integer,
+                                                    unique=True))
 
 
 class Season(SeasonBase, table=True):
@@ -98,9 +106,12 @@ class SeasonRead(SeasonBase):
 
 class ChapterBase(SQLModel):
     season_id: int = Field(foreign_key="season.id")
-    title: str
+    title: str = Field(sa_column=Column("title", String, unique=True))
     chapter_prequel_id: Optional[int] = Field(default=None,
-                                              foreign_key="chapter.id")
+                                              foreign_key="chapter.id",
+                                              sa_column=
+                                              Column("chapter_prequel_id",
+                                                     Integer, unique=True))
 
 
 class Chapter(ChapterBase, table=True):

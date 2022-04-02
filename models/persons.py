@@ -2,6 +2,7 @@
 from datetime import date
 from typing import Optional
 
+from sqlalchemy import Column, Integer
 from sqlmodel import SQLModel, Field, Relationship, select
 
 from business_logic.business_logic import PersonBusinessLogic
@@ -86,7 +87,8 @@ class FilmPersonRoleRead(FilmPersonRoleBase):
 
 
 class ClientBase(SQLModel):
-    person_id: int = Field(foreign_key="person.id")
+    person_id: int = Field(foreign_key="person.id",
+                           sa_column=Column("person_id", Integer, unique=True))
     direction: str
     phone: str
     email: str
