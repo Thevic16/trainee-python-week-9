@@ -15,6 +15,7 @@ passlib = "*"
 pyjwt = "*"
 python-multipart = "*"
 fastapi-redis-cache = "*"
+typer = "*"
 
 [dev-packages]
 coverage = "*"

@@ -196,15 +196,15 @@ async def get_by_id_a_film_person_role(film_person_role_id: int):
              dependencies=[Depends(get_admin_user)])
 async def create_a_film_person_role(role: FilmPersonRoleCreate):
     session.rollback()
-    new_role = FilmPersonRole(film_id=role.film_id,
-                              person_id=role.person_id,
-                              role_id=role.role_id)
+    new_film_person_role = FilmPersonRole(film_id=role.film_id,
+                                          person_id=role.person_id,
+                                          role_id=role.role_id)
 
-    session.add(new_role)
+    session.add(new_film_person_role)
 
     session.commit()
 
-    return new_role
+    return new_film_person_role
 
 
 @router.put('/api/films-persons-roles/{film_person_role_id}',

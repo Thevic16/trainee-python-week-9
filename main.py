@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Request, Response
-from sqlalchemy.exc import IntegrityError, PendingRollbackError
+from sqlalchemy.exc import IntegrityError
 from sqlmodel import SQLModel, Session
 from starlette.responses import JSONResponse
 
