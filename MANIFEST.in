@@ -1,0 +1,6 @@
+include README
+include Pipfile
+include Pipfile.lock
+include .coveragerc
+include .flake8
+prune */test/
