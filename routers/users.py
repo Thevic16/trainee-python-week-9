@@ -1,6 +1,7 @@
 from typing import List
 
 from fastapi import APIRouter, Depends, HTTPException
+from fastapi_redis_cache import cache_one_month
 from sqlmodel import select
 from starlette import status
 
@@ -17,6 +18,7 @@ session = get_db_session()
 @router.get('/api/users', response_model=List[UserRead],
             status_code=status.HTTP_200_OK,
             dependencies=[Depends(get_admin_user)])
+@cache_one_month()
 async def get_all_users():
     session.rollback()
     statement = select(User)
@@ -27,6 +29,7 @@ async def get_all_users():
 
 @router.get('/api/users/{user_id}', response_model=UserRead,
             dependencies=[Depends(get_admin_user)])
+@cache_one_month()
 async def get_by_id_a_user(user_id: int):
     session.rollback()
     statement = select(User).where(User.id == user_id)

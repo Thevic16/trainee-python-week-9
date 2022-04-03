@@ -31,7 +31,7 @@ class CategoryRead(CategoryBase):
 
 
 class FilmBase(SQLModel):
-    title: str
+    title: str = Field(sa_column=Column("title", String, unique=True))
     description: str
     release_date: date
     category_id: int = Field(foreign_key="category.id")

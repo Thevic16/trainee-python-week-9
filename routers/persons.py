@@ -1,6 +1,7 @@
 from typing import List
 
 from fastapi import APIRouter, Depends, HTTPException
+from fastapi_redis_cache import cache_one_month
 from sqlmodel import select
 from starlette import status
 
@@ -18,6 +19,7 @@ session = get_db_session()
 # Person Related Routes
 @router.get('/api/persons', response_model=List[PersonRead],
             status_code=status.HTTP_200_OK)
+@cache_one_month()
 async def get_all_persons():
     session.rollback()
     statement = select(Person)
@@ -27,6 +29,7 @@ async def get_all_persons():
 
 
 @router.get('/api/persons/{person_id}', response_model=PersonRead)
+@cache_one_month()
 async def get_by_id_a_person(person_id: int):
     session.rollback()
     statement = select(Person).where(Person.id == person_id)
@@ -95,6 +98,7 @@ async def delete_a_person(person_id: int):
 
 @router.get('/api/roles', response_model=List[RoleRead],
             status_code=status.HTTP_200_OK)
+@cache_one_month()
 async def get_all_roles():
     session.rollback()
     statement = select(Role)
@@ -104,6 +108,7 @@ async def get_all_roles():
 
 
 @router.get('/api/roles/{role_id}', response_model=RoleRead)
+@cache_one_month()
 async def get_by_id_a_role(role_id: int):
     session.rollback()
     statement = select(Role).where(Role.id == role_id)
@@ -164,6 +169,7 @@ async def delete_a_role(role_id: int):
 @router.get('/api/films-persons-roles',
             response_model=List[FilmPersonRoleRead],
             status_code=status.HTTP_200_OK)
+@cache_one_month()
 async def get_all_films_persons_roles():
     session.rollback()
     statement = select(FilmPersonRole)
@@ -174,6 +180,7 @@ async def get_all_films_persons_roles():
 
 @router.get('/api/films-persons-roles/{film_person_role_id}',
             response_model=FilmPersonRoleRead)
+@cache_one_month()
 async def get_by_id_a_film_person_role(film_person_role_id: int):
     session.rollback()
     statement = select(FilmPersonRole).where(
@@ -241,6 +248,7 @@ async def delete_a_film_person_role(film_person_role_id: int):
 
 @router.get('/api/clients', response_model=List[ClientRead],
             status_code=status.HTTP_200_OK)
+@cache_one_month()
 async def get_all_clients():
     session.rollback()
     statement = select(Client)
@@ -250,6 +258,7 @@ async def get_all_clients():
 
 
 @router.get('/api/clients/{client_id}', response_model=ClientRead)
+@cache_one_month()
 async def get_by_id_a_client(client_id: int):
     session.rollback()
     statement = select(Client).where(Client.id == client_id)
