@@ -1,0 +1,2 @@
+[flake8]
+exclude = db-migration/, .git ,.gitignore, Pipfile, Pipfile.lock, README.md, __pycache__
