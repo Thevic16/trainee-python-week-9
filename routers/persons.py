@@ -19,6 +19,7 @@ session = get_db_session()
 @router.get('/api/persons', response_model=List[PersonRead],
             status_code=status.HTTP_200_OK)
 async def get_all_persons():
+    session.rollback()
     statement = select(Person)
     results = session.exec(statement).all()
 
@@ -27,6 +28,7 @@ async def get_all_persons():
 
 @router.get('/api/persons/{person_id}', response_model=PersonRead)
 async def get_by_id_a_person(person_id: int):
+    session.rollback()
     statement = select(Person).where(Person.id == person_id)
     result = session.exec(statement).first()
 
@@ -37,6 +39,7 @@ async def get_by_id_a_person(person_id: int):
              status_code=status.HTTP_201_CREATED,
              dependencies=[Depends(get_admin_user)])
 async def create_a_person(person: PersonCreate):
+    session.rollback()
     new_person = Person(name=person.name,
                         lastname=person.lastname,
                         gender=person.gender,
@@ -54,6 +57,7 @@ async def create_a_person(person: PersonCreate):
 @router.put('/api/persons/{person_id}', response_model=PersonRead,
             dependencies=[Depends(get_admin_user)])
 async def update_a_person(person_id: int, person: PersonCreate):
+    session.rollback()
     statement = select(Person).where(Person.id == person_id)
 
     result = session.exec(statement).first()
@@ -75,6 +79,7 @@ async def update_a_person(person_id: int, person: PersonCreate):
                status_code=status.HTTP_204_NO_CONTENT,
                dependencies=[Depends(get_admin_user)])
 async def delete_a_person(person_id: int):
+    session.rollback()
     statement = select(Person).where(Person.id == person_id)
 
     result = session.exec(statement).one_or_none()
@@ -91,6 +96,7 @@ async def delete_a_person(person_id: int):
 @router.get('/api/roles', response_model=List[RoleRead],
             status_code=status.HTTP_200_OK)
 async def get_all_roles():
+    session.rollback()
     statement = select(Role)
     results = session.exec(statement).all()
 
@@ -99,6 +105,7 @@ async def get_all_roles():
 
 @router.get('/api/roles/{role_id}', response_model=RoleRead)
 async def get_by_id_a_role(role_id: int):
+    session.rollback()
     statement = select(Role).where(Role.id == role_id)
     result = session.exec(statement).first()
 
@@ -109,6 +116,7 @@ async def get_by_id_a_role(role_id: int):
              status_code=status.HTTP_201_CREATED,
              dependencies=[Depends(get_admin_user)])
 async def create_a_role(role: RoleCreate):
+    session.rollback()
     new_role = Role(name=role.name,
                     description=role.description)
 
@@ -122,6 +130,7 @@ async def create_a_role(role: RoleCreate):
 @router.put('/api/roles/{role_id}', response_model=RoleRead,
             dependencies=[Depends(get_admin_user)])
 async def update_a_role(role_id: int, role: RoleCreate):
+    session.rollback()
     statement = select(Role).where(Role.id == role_id)
 
     result = session.exec(statement).first()
@@ -138,6 +147,7 @@ async def update_a_role(role_id: int, role: RoleCreate):
                status_code=status.HTTP_204_NO_CONTENT,
                dependencies=[Depends(get_admin_user)])
 async def delete_a_role(role_id: int):
+    session.rollback()
     statement = select(Role).where(Role.id == role_id)
 
     result = session.exec(statement).one_or_none()
@@ -155,6 +165,7 @@ async def delete_a_role(role_id: int):
             response_model=List[FilmPersonRoleRead],
             status_code=status.HTTP_200_OK)
 async def get_all_films_persons_roles():
+    session.rollback()
     statement = select(FilmPersonRole)
     results = session.exec(statement).all()
 
@@ -164,6 +175,7 @@ async def get_all_films_persons_roles():
 @router.get('/api/films-persons-roles/{film_person_role_id}',
             response_model=FilmPersonRoleRead)
 async def get_by_id_a_film_person_role(film_person_role_id: int):
+    session.rollback()
     statement = select(FilmPersonRole).where(
         FilmPersonRole.id == film_person_role_id)
 
@@ -176,6 +188,7 @@ async def get_by_id_a_film_person_role(film_person_role_id: int):
              status_code=status.HTTP_201_CREATED,
              dependencies=[Depends(get_admin_user)])
 async def create_a_film_person_role(role: FilmPersonRoleCreate):
+    session.rollback()
     new_role = FilmPersonRole(film_id=role.film_id,
                               person_id=role.person_id,
                               role_id=role.role_id)
@@ -192,6 +205,7 @@ async def create_a_film_person_role(role: FilmPersonRoleCreate):
             dependencies=[Depends(get_admin_user)])
 async def update_a_film_person_role(film_person_role_id: int,
                                     film_person_role: FilmPersonRoleCreate):
+    session.rollback()
     statement = select(FilmPersonRole).where(
         FilmPersonRole.id == film_person_role_id)
 
@@ -210,6 +224,7 @@ async def update_a_film_person_role(film_person_role_id: int,
                status_code=status.HTTP_204_NO_CONTENT,
                dependencies=[Depends(get_admin_user)])
 async def delete_a_film_person_role(film_person_role_id: int):
+    session.rollback()
     statement = select(FilmPersonRole).where(
         FilmPersonRole.id == film_person_role_id)
 
@@ -227,6 +242,7 @@ async def delete_a_film_person_role(film_person_role_id: int):
 @router.get('/api/clients', response_model=List[ClientRead],
             status_code=status.HTTP_200_OK)
 async def get_all_clients():
+    session.rollback()
     statement = select(Client)
     results = session.exec(statement).all()
 
@@ -235,6 +251,7 @@ async def get_all_clients():
 
 @router.get('/api/clients/{client_id}', response_model=ClientRead)
 async def get_by_id_a_client(client_id: int):
+    session.rollback()
     statement = select(Client).where(Client.id == client_id)
     result = session.exec(statement).first()
 
@@ -245,6 +262,7 @@ async def get_by_id_a_client(client_id: int):
              status_code=status.HTTP_201_CREATED,
              dependencies=[Depends(get_admin_user)])
 async def create_a_client(client: ClientCreate):
+    session.rollback()
     new_client = Client(person_id=client.person_id,
                         direction=client.direction,
                         phone=client.phone,
@@ -260,6 +278,7 @@ async def create_a_client(client: ClientCreate):
 @router.put('/api/clients/{client_id}', response_model=ClientRead,
             dependencies=[Depends(get_admin_user)])
 async def update_a_client(client_id: int, client: Client):
+    session.rollback()
     statement = select(Client).where(Client.id == client_id)
 
     result = session.exec(statement).first()
@@ -278,6 +297,7 @@ async def update_a_client(client_id: int, client: Client):
                status_code=status.HTTP_204_NO_CONTENT,
                dependencies=[Depends(get_admin_user)])
 async def delete_a_client(client_id: int):
+    session.rollback()
     statement = select(Client).where(Client.id == client_id)
 
     result = session.exec(statement).one_or_none()

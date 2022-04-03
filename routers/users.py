@@ -18,6 +18,7 @@ session = get_db_session()
             status_code=status.HTTP_200_OK,
             dependencies=[Depends(get_admin_user)])
 async def get_all_users():
+    session.rollback()
     statement = select(User)
     results = session.exec(statement).all()
 
@@ -27,6 +28,7 @@ async def get_all_users():
 @router.get('/api/users/{user_id}', response_model=UserRead,
             dependencies=[Depends(get_admin_user)])
 async def get_by_id_a_user(user_id: int):
+    session.rollback()
     statement = select(User).where(User.id == user_id)
     result = session.exec(statement).first()
 
@@ -36,6 +38,7 @@ async def get_by_id_a_user(user_id: int):
 @router.post('/api/users', response_model=UserRead,
              status_code=status.HTTP_201_CREATED)
 async def create_a_user(user: UserCreate):
+    session.rollback()
     new_user = User(username=user.username,
                     password=get_password_hash(user.password),
                     is_admin=user.is_admin,
@@ -51,6 +54,7 @@ async def create_a_user(user: UserCreate):
 @router.put('/api/users/{user_id}', response_model=UserRead,
             dependencies=[Depends(get_admin_user)])
 async def update_a_user(user_id: int, user: UserCreate):
+    session.rollback()
     statement = select(User).where(User.id == user_id)
 
     result = session.exec(statement).first()
@@ -69,6 +73,7 @@ async def update_a_user(user_id: int, user: UserCreate):
                status_code=status.HTTP_204_NO_CONTENT,
                dependencies=[Depends(get_admin_user)])
 async def delete_a_user(user_id: int):
+    session.rollback()
     statement = select(User).where(User.id == user_id)
     result = session.exec(statement).one_or_none()
 

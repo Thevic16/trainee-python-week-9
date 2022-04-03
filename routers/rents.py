@@ -17,6 +17,7 @@ session = get_db_session()
 @router.get('/api/rents', response_model=List[RentRead],
             status_code=status.HTTP_200_OK)
 async def get_all_rents():
+    session.rollback()
     statement = select(Rent)
     results = session.exec(statement).all()
 
@@ -25,6 +26,7 @@ async def get_all_rents():
 
 @router.get('/api/rents/{rent_id}', response_model=RentRead)
 async def get_by_id_a_rent(rent_id: int):
+    session.rollback()
     statement = select(Rent).where(Rent.id == rent_id)
     result = session.exec(statement).first()
 
@@ -35,6 +37,7 @@ async def get_by_id_a_rent(rent_id: int):
              status_code=status.HTTP_201_CREATED,
              dependencies=[Depends(get_admin_or_employee_user)])
 async def create_a_rent(rent: RentCreate):
+    session.rollback()
     new_rent = Rent(film_id=rent.film_id,
                     client_id=rent.client_id,
                     amount=rent.amount,
@@ -54,6 +57,7 @@ async def create_a_rent(rent: RentCreate):
 @router.put('/api/rents/{rent_id}', response_model=RentRead,
             dependencies=[Depends(get_admin_or_employee_user)])
 async def update_a_rent(rent_id: int, rent: RentCreate):
+    session.rollback()
     statement = select(Rent).where(Rent.id == rent_id)
 
     result = session.exec(statement).first()
@@ -77,6 +81,7 @@ async def update_a_rent(rent_id: int, rent: RentCreate):
                status_code=status.HTTP_204_NO_CONTENT,
                dependencies=[Depends(get_admin_or_employee_user)])
 async def delete_a_rent(rent_id: int):
+    session.rollback()
     statement = select(Rent).where(Rent.id == rent_id)
 
     result = session.exec(statement).one_or_none()

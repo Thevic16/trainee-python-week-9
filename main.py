@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Request, Response
-from sqlalchemy.exc import IntegrityError
-from sqlmodel import SQLModel
+from sqlalchemy.exc import IntegrityError, PendingRollbackError
+from sqlmodel import SQLModel, Session
 from starlette.responses import JSONResponse
 
 from databases.db import engine, get_db_session
@@ -38,7 +38,6 @@ SQLModel.metadata.create_all(engine)
 @app.exception_handler(IntegrityError)
 async def integrityError_exception_handler(request: Request,
                                            exc: IntegrityError):
-    session.rollback()
     Logger.error(f"Integrity Error: {exc}")
     return JSONResponse(
         status_code=500,
@@ -49,11 +48,20 @@ async def integrityError_exception_handler(request: Request,
 @app.exception_handler(AttributeError)
 async def attributeError_exception_handler(request: Request,
                                            exc: AttributeError):
-    session.rollback()
     Logger.error(f"AttributeError: {exc}")
     return JSONResponse(
         status_code=500,
         content={"message": f"Attribute Error {exc.name}"},
+    )
+
+
+@app.exception_handler(TypeError)
+async def NoneType_exception_handler(request: Request,
+                                     exc: TypeError):
+    Logger.error(f"AttributeError: {exc}")
+    return JSONResponse(
+        status_code=500,
+        content={"message": f"TypeError"},
     )
 
 
@@ -63,7 +71,7 @@ def startup():
     redis_cache = FastApiRedisCache()
     redis_cache.init(
         host_url=os.environ.get("REDIS_URL", os.getenv('REDIS_URL')),
-        prefix="film-rental-system-cache",
-        response_header="X-Film-Rental- System-Cache",
-        ignore_arg_types=[Request, Response, get_db_session()]
+        prefix="api-cache",
+        response_header="X-API-Cache",
+        ignore_arg_types=[Request, Response, session]
     )

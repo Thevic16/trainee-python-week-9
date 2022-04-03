@@ -1,6 +1,7 @@
 from typing import List
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Request
+from fastapi_redis_cache import cache_one_month
 from sqlmodel import select
 from starlette import status
 
@@ -19,7 +20,9 @@ session = get_db_session()
 # Film Related Routes
 @router.get('/api/categories', response_model=List[CategoryRead],
             status_code=status.HTTP_200_OK)
+@cache_one_month()
 async def get_all_categories():
+    session.rollback()
     statement = select(Category)
     results = session.exec(statement).all()
 
@@ -27,7 +30,9 @@ async def get_all_categories():
 
 
 @router.get('/api/categories/{category_id}', response_model=CategoryRead)
+@cache_one_month()
 async def get_by_id_a_category(category_id: int):
+    session.rollback()
     statement = select(Category).where(Category.id == category_id)
     result = session.exec(statement).first()
 
@@ -40,7 +45,7 @@ async def get_by_id_a_category(category_id: int):
 async def create_a_category(category: CategoryCreate):
     new_category = Category(name=category.name,
                             description=category.description)
-
+    session.rollback()
     session.add(new_category)
 
     session.commit()
@@ -51,6 +56,7 @@ async def create_a_category(category: CategoryCreate):
 @router.put('/api/categories/{category_id}', response_model=CategoryRead,
             dependencies=[Depends(get_admin_user)])
 async def update_a_category(category_id: int, category: CategoryCreate):
+    session.rollback()
     statement = select(Category).where(Category.id == category_id)
 
     result = session.exec(statement).first()
@@ -67,6 +73,7 @@ async def update_a_category(category_id: int, category: CategoryCreate):
                status_code=status.HTTP_204_NO_CONTENT,
                dependencies=[Depends(get_admin_user)])
 async def delete_a_category(category_id: int):
+    session.rollback()
     statement = select(Category).where(Category.id == category_id)
 
     result = session.exec(statement).one_or_none()
@@ -82,7 +89,9 @@ async def delete_a_category(category_id: int):
 
 @router.get('/api/films', response_model=List[FilmRead],
             status_code=status.HTTP_200_OK)
+@cache_one_month()
 async def get_all_films():
+    session.rollback()
     statement = select(Film)
     results = session.exec(statement).all()
 
@@ -95,7 +104,9 @@ async def get_all_films():
 
 
 @router.get('/api/films/{film_id}', response_model=FilmRead)
+@cache_one_month()
 async def get_by_id_a_film(film_id: int):
+    session.rollback()
     statement = select(Film).where(Film.id == film_id)
     result = session.exec(statement).first()
 
@@ -110,6 +121,7 @@ async def get_by_id_a_film(film_id: int):
              status_code=status.HTTP_201_CREATED,
              dependencies=[Depends(get_admin_user)])
 async def create_a_film(film: FilmCreate):
+    session.rollback()
     new_film = Film(title=film.title,
                     description=film.description,
                     release_date=film.release_date,
@@ -130,6 +142,7 @@ async def create_a_film(film: FilmCreate):
 @router.put('/api/films/{film_id}', response_model=FilmRead,
             dependencies=[Depends(get_admin_user)])
 async def update_a_film(film_id: int, film: FilmCreate):
+    session.rollback()
     statement = select(Film).where(Film.id == film_id)
 
     result = session.exec(statement).first()
@@ -154,6 +167,7 @@ async def update_a_film(film_id: int, film: FilmCreate):
                status_code=status.HTTP_204_NO_CONTENT,
                dependencies=[Depends(get_admin_user)])
 async def delete_a_film(film_id: int):
+    session.rollback()
     statement = select(Film).where(Film.id == film_id)
 
     result = session.exec(statement).one_or_none()
@@ -169,7 +183,9 @@ async def delete_a_film(film_id: int):
 
 @router.get('/api/seasons', response_model=List[SeasonRead],
             status_code=status.HTTP_200_OK)
+@cache_one_month()
 async def get_all_seasons():
+    session.rollback()
     statement = select(Season)
     results = session.exec(statement).all()
 
@@ -177,7 +193,9 @@ async def get_all_seasons():
 
 
 @router.get('/api/seasons/{season_id}', response_model=SeasonRead)
+@cache_one_month()
 async def get_by_a_season(season_id: int):
+    session.rollback()
     statement = select(Season).where(Season.id == season_id)
     result = session.exec(statement).first()
 
@@ -188,6 +206,7 @@ async def get_by_a_season(season_id: int):
              status_code=status.HTTP_201_CREATED,
              dependencies=[Depends(get_admin_user)])
 async def create_a_season(season: SeasonCreate):
+    session.rollback()
     new_season = Season(film_id=season.film_id,
                         title=season.title,
                         season_prequel_id=season.season_prequel_id)
@@ -201,6 +220,7 @@ async def create_a_season(season: SeasonCreate):
 @router.put('/api/seasons/{season_id}', response_model=SeasonRead,
             dependencies=[Depends(get_admin_user)])
 async def update_a_season(season_id: int, season: SeasonCreate):
+    session.rollback()
     statement = select(Season).where(Season.id == season_id)
 
     result = session.exec(statement).first()
@@ -218,6 +238,7 @@ async def update_a_season(season_id: int, season: SeasonCreate):
                status_code=status.HTTP_204_NO_CONTENT,
                dependencies=[Depends(get_admin_user)])
 async def delete_a_season(season_id: int):
+    session.rollback()
     statement = select(Season).where(Season.id == season_id)
 
     result = session.exec(statement).one_or_none()
@@ -233,7 +254,9 @@ async def delete_a_season(season_id: int):
 
 @router.get('/api/chapters', response_model=List[ChapterRead],
             status_code=status.HTTP_200_OK)
+@cache_one_month()
 async def get_all_chapters():
+    session.rollback()
     statement = select(Chapter)
     results = session.exec(statement).all()
 
@@ -241,7 +264,9 @@ async def get_all_chapters():
 
 
 @router.get('/api/chapters/{chapter_id}', response_model=ChapterRead)
+@cache_one_month()
 async def get_by_id_a_chapter(chapter_id: int):
+    session.rollback()
     statement = select(Chapter).where(Chapter.id == chapter_id)
     result = session.exec(statement).first()
 
@@ -252,6 +277,7 @@ async def get_by_id_a_chapter(chapter_id: int):
              status_code=status.HTTP_201_CREATED,
              dependencies=[Depends(get_admin_user)])
 async def create_a_chapter(chapter: ChapterCreate):
+    session.rollback()
     new_chapter = Chapter(season_id=chapter.season_id,
                           title=chapter.title,
                           chapter_prequel_id=chapter.chapter_prequel_id)
@@ -266,6 +292,7 @@ async def create_a_chapter(chapter: ChapterCreate):
 @router.put('/api/chapters/{chapter_id}', response_model=ChapterRead,
             dependencies=[Depends(get_admin_user)])
 async def update_a_chapter(chapter_id: int, chapter: ChapterCreate):
+    session.rollback()
     statement = select(Chapter).where(Chapter.id == chapter_id)
 
     result = session.exec(statement).first()
@@ -283,6 +310,7 @@ async def update_a_chapter(chapter_id: int, chapter: ChapterCreate):
                status_code=status.HTTP_204_NO_CONTENT,
                dependencies=[Depends(get_admin_user)])
 async def delete_a_chapter(chapter_id: int):
+    session.rollback()
     statement = select(Chapter).where(Chapter.id == chapter_id)
 
     result = session.exec(statement).one_or_none()
