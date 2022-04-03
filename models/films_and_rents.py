@@ -4,7 +4,7 @@ from typing import Optional, List
 from sqlmodel import SQLModel, Field, Relationship, select
 
 from business_logic.business_logic import RentBusinessLogic
-from database.db import get_db_session
+from databases.db import get_db_session
 from pydantic import validator
 from validators import validators
 from sqlalchemy import Column, String, Integer

@@ -20,3 +20,10 @@ services:
       - POSTGRES_DB=db-film-rental-system-week-9
     ports:
       - "7000:5432"
+
+  redis:
+    image: redis:alpine
+
+
+volumes:
+  pg_data: {}

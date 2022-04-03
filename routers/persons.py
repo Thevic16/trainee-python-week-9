@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import select
 from starlette import status
 
-from database.db import get_db_session
+from databases.db import get_db_session
 from models.persons import PersonRead, Person, PersonCreate, RoleRead, Role, \
     RoleCreate, FilmPersonRoleRead, FilmPersonRole, FilmPersonRoleCreate, \
     ClientRead, Client, ClientCreate

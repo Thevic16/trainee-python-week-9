@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import select
 from starlette import status
 
-from database.db import get_db_session
+from databases.db import get_db_session
 from models.films_and_rents import RentRead, Rent, RentCreate
 from security.security import get_admin_or_employee_user
 

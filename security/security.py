@@ -14,7 +14,7 @@ import os
 # Load virtual variables
 from sqlmodel import select
 
-from database.db import get_db_session
+from databases.db import get_db_session
 from models.tokens import TokenData
 from models.users import User
 

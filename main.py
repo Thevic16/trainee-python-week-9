@@ -1,18 +1,27 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, Response
 from sqlalchemy.exc import IntegrityError
 from sqlmodel import SQLModel
 from starlette.responses import JSONResponse
 
-from database.db import engine, get_db_session
+from databases.db import engine, get_db_session
 
 from utilities.logger import Logger
 
 # Import routes
 from routers import users, security, films, persons, rents
 
+# Redis db imports
+from fastapi_redis_cache import FastApiRedisCache, cache
+from dotenv import load_dotenv
+import os
+
+# Initialize environ
+# Load virtual variables
+load_dotenv()  # take environment variables from .env.
 
 app = FastAPI()
 
+# Add routes
 app.include_router(users.router)
 app.include_router(security.router)
 app.include_router(films.router)
@@ -21,7 +30,7 @@ app.include_router(rents.router)
 
 session = get_db_session()
 
-# Creating database
+# Creating databases
 SQLModel.metadata.create_all(engine)
 
 
@@ -45,4 +54,16 @@ async def attributeError_exception_handler(request: Request,
     return JSONResponse(
         status_code=500,
         content={"message": f"Attribute Error {exc.name}"},
+    )
+
+
+# Redis event------------------------------------------------------------------
+@app.on_event("startup")
+def startup():
+    redis_cache = FastApiRedisCache()
+    redis_cache.init(
+        host_url=os.environ.get("REDIS_URL", os.getenv('REDIS_URL')),
+        prefix="film-rental-system-cache",
+        response_header="X-Film-Rental- System-Cache",
+        ignore_arg_types=[Request, Response, get_db_session()]
     )
