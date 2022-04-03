@@ -6,7 +6,9 @@ from alembic import context
 from sqlalchemy import create_engine
 
 # necessarily to import something from file where your models are stored
-from models import *
+from sqlmodel import SQLModel
+
+from models import films_and_rents, persons, tokens, users
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
