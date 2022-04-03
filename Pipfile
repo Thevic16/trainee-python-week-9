@@ -16,6 +16,8 @@ pyjwt = "*"
 python-multipart = "*"
 
 [dev-packages]
+coverage = "*"
+flake8 = "*"
 
 [requires]
 python_version = "3.10"
