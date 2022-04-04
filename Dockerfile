@@ -14,4 +14,5 @@ RUN pipenv lock --pre --requirements > requirements.txt
 RUN apk add --no-cache zlib-dev jpeg-dev gcc musl-dev linux-headers
 RUN pip install -r requirements.txt
 
+CMD uvicorn main:app --reload --workers 1 --host 0.0.0.0 --port $PORT
 COPY . .
