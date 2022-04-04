@@ -10,11 +10,31 @@ from models.films_and_rents import (CategoryRead, Category, CategoryCreate,
                                     FilmRead, Film, FilmCreate, SeasonRead,
                                     Season, SeasonCreate, ChapterRead, Chapter,
                                     ChapterCreate)
+from s3_events.s3_utils import S3_SERVICE
 from security.security import get_admin_user
+
+# S3 related imports
+import os
+from dotenv import load_dotenv
+from fastapi.param_functions import File
+from fastapi.datastructures import UploadFile
+import datetime
+
+load_dotenv()
 
 router = APIRouter()
 
 session = get_db_session()
+
+# S3 service environment variables and service
+AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
+AWS_REGION = os.environ.get("AWS_REGION")
+S3_Bucket = os.environ.get("S3_Bucket")
+S3_Key = os.environ.get("S3_Key")
+
+# Object of S3_SERVICE Class
+s3_client = S3_SERVICE(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION)
 
 
 # Film Related Routes
@@ -179,6 +199,34 @@ async def delete_a_film(film_id: int):
     session.delete(result)
 
     return result
+
+
+@router.post("api/films/upload/poster", status_code=200,
+             description="Upload png poster asset to S3 ")
+async def upload(fileobject: UploadFile = File(...)):
+    filename = fileobject.filename
+    current_time = datetime.datetime.now()
+    # split the file name into two different path (string +  extention)
+    split_file_name = os.path.splitext(
+        filename)
+
+    # for realtime application you must have genertae unique name for the file
+    file_name_unique = str(current_time.timestamp()).replace('.','')
+
+    file_extension = split_file_name[1]  # file extention
+    # Converting tempfile.SpooledTemporaryFile to io.BytesIO
+    data = fileobject.file._file
+    uploads3 = await s3_client.upload_fileobj(bucket=S3_Bucket,
+                                              key=S3_Key + file_name_unique
+                                                  + file_extension,
+                                              fileobject=data)
+    if uploads3:
+        s3_url = f"https://" \
+                 f"{S3_Bucket}.s3.{AWS_REGION}.amazonaws.com/" \
+                 f"{S3_Key}{file_name_unique + file_extension}"
+        return {"status": "success", "image_url": s3_url}  # response added
+    else:
+        raise HTTPException(status_code=400, detail="Failed to upload in S3")
 
 
 @router.get('/api/seasons', response_model=List[SeasonRead],
