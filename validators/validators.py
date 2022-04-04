@@ -2,10 +2,16 @@ import re
 from datetime import date
 
 # New Validators
+from sqlmodel import select
+
 from business_logic.business_logic import RentBusinessLogic
+from databases.db import get_db_session
+from models.films_and_rents import Film
+
+session = get_db_session()
 
 
-def validate_email(email):
+def validate_email(email: str) -> str:
     if not email:
         raise ValueError('No email provided')
     if not re.match("[^@]+@[^@]+\.[^@]+", email):
@@ -14,7 +20,7 @@ def validate_email(email):
     return email
 
 
-def validate_phone(phone):
+def validate_phone(phone: str) -> str:
     if not phone:
         raise ValueError('No phone provided')
     if not re.match("\d{3}-\d{4}-\d{4}$", phone):
@@ -23,34 +29,44 @@ def validate_phone(phone):
     return phone
 
 
-def validate_film_type(film_type):
+def validate_film_type(film_type: str) -> str:
     if film_type not in ('movie', 'serie'):
         raise AssertionError('film_type should be movie or serie')
     return film_type
 
 
-def validate_gender(gender):
+def validate_gender(gender: str) -> str:
     if gender not in ('male', 'feminine'):
         raise AssertionError('gender should be male or feminine')
     return gender
 
 
-def validate_person_type(person_type):
+def validate_person_type(person_type: str) -> str:
     if person_type not in ('film related', 'client'):
         raise AssertionError('person_type should be film related or client')
     return person_type
 
 
-def validate_person_type_client(person_type):
+def validate_person_type_client(person_type: str) -> str:
     if person_type != 'client':
         raise AssertionError('person_type should be client')
     return person_type
 
 
-def validate_rent_state(film_type):
+def validate_rent_state(film_type: str) -> str:
     if film_type not in ('open', 'close'):
         raise AssertionError('state should be open or close')
     return film_type
+
+
+def validate_amount(amount: int, film_id: int):
+    statement = select(Film).where(Film.id == film_id)
+    film = session.exec(statement).one_or_none()
+
+    if (availability := (film.get_availability(film_id) - amount)) < 0:
+        raise AssertionError(
+            f'The amount exceeds availability by {-availability}')
+    return amount
 
 
 # Film Validators
