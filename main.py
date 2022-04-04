@@ -11,7 +11,7 @@ from utilities.logger import Logger
 from routers import users, security, films, persons, rents
 
 # Redis db imports
-from fastapi_redis_cache import FastApiRedisCache, cache
+from fastapi_redis_cache import FastApiRedisCache
 from dotenv import load_dotenv
 import os
 
