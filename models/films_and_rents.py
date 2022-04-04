@@ -169,8 +169,10 @@ class Rent(RentBase, table=True):
 
 class RentCreate(RentBase):
     @validator('amount')
-    def validate_amount(cls, v):
-        return validators.validator_no_negative(v)
+    def validate_amount(cls, v, values, **kwargs):
+        validators.validator_no_negative(v)
+        validators.validate_amount(v, values['film_id'])
+        return v
 
     @validator('return_date')
     def validate_return_date(cls, v, values, **kwargs):

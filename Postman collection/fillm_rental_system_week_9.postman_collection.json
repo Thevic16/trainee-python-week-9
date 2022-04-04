@@ -1,0 +1,1595 @@
+{
+	"info": {
+		"_postman_id": "6b2d1aa8-84f9-4be8-b121-ac8342fcf93c",
+		"name": "fillm_rental_system_week_9",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Get User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBmaWxtcmVudGFsc3lzdGVtLmNvbSIsImV4cCI6MTY0OTAxOTMxMX0.GSEmMfydI2ZUOqMPZZIwVPXym_KyCS2ku2167gWeiPE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NDg1MDkzMjUsIm5iZiI6MTY0ODUwOTMyNSwianRpIjoiNWIzOTQyZWEtNjEzNi00NjhkLThkZGEtNDYwNjQ1MzA5NGVhIiwiZXhwIjoxNjQ4NTEwMjI1LCJpZGVudGl0eSI6MSwiZnJlc2giOnRydWUsInR5cGUiOiJhY2Nlc3MiLCJ1c2VyX2NsYWltcyI6eyJpc19hZG1pbiI6dHJ1ZSwiaXNfZW1wbG95ZWUiOnRydWV9fQ.vwByJUXjxQtCu2lsqHAZnvbWeI_azl2poZ4eMm6q_6M",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{url}}/api/users/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								""
+							]
+						},
+						"description": "Sixth Week Assignment. \n"
+					},
+					"response": []
+				},
+				{
+					"name": "Get User by id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NDg1MTA4MzAsIm5iZiI6MTY0ODUxMDgzMCwianRpIjoiZjQzZjRkN2QtMTY0Ny00MjU3LTkxNmItODMyNDkxZWExODRhIiwiZXhwIjoxNjQ4NTExNzMwLCJpZGVudGl0eSI6MSwiZnJlc2giOnRydWUsInR5cGUiOiJhY2Nlc3MiLCJ1c2VyX2NsYWltcyI6eyJpc19hZG1pbiI6dHJ1ZSwiaXNfZW1wbG95ZWUiOnRydWV9fQ.46sqZai4ikl3dAkS4jwb5jh2dUEbKwr8CVz7z-eK_Wo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NDg1MDkzMjUsIm5iZiI6MTY0ODUwOTMyNSwianRpIjoiNWIzOTQyZWEtNjEzNi00NjhkLThkZGEtNDYwNjQ1MzA5NGVhIiwiZXhwIjoxNjQ4NTEwMjI1LCJpZGVudGl0eSI6MSwiZnJlc2giOnRydWUsInR5cGUiOiJhY2Nlc3MiLCJ1c2VyX2NsYWltcyI6eyJpc19hZG1pbiI6dHJ1ZSwiaXNfZW1wbG95ZWUiOnRydWV9fQ.vwByJUXjxQtCu2lsqHAZnvbWeI_azl2poZ4eMm6q_6M",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{url}}/api/users/{{id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"{{id}}"
+							]
+						},
+						"description": "Sixth Week Assignment. \n"
+					},
+					"response": []
+				},
+				{
+					"name": "Post Users",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBmaWxtcmVudGFsc3lzdGVtLmNvbSIsImV4cCI6MTY0OTAwMDY2MH0.YVExCZOSPTukE0PlcRlMYh-h4BnC-f6wFeE942tIDXI",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"employee@filmrentalsystem.com\",\n  \"password\": \"employee12345678\",\n  \"is_admin\": false,\n  \"is_employee\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/users/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								""
+							]
+						},
+						"description": "Sixth Week Assignment. \n"
+					},
+					"response": []
+				},
+				{
+					"name": "Put Users",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbjFAZmlsbXJlbnRhbHN5c3RlbS5jb20iLCJleHAiOjE2NDg3ODQzODF9.h0ECVW4LiilauYjZdViZdy6ejGQHfuHnTISIv_RTCiY",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"example1@gmail.com\",\n  \"password\": \"example1-password\",\n  \"is_admin\": true,\n  \"is_employee\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/users/{{id}}/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"{{id}}",
+								""
+							]
+						},
+						"description": "Sixth Week Assignment. \n"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Users",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NDg1MTEzMzEsIm5iZiI6MTY0ODUxMTMzMSwianRpIjoiNjNlYzU4OGMtZjQwNy00Y2I1LWJkODAtNGIxOTNmOGM3NWM0IiwiZXhwIjoxNjQ4NTEyMjMxLCJpZGVudGl0eSI6MSwiZnJlc2giOnRydWUsInR5cGUiOiJhY2Nlc3MiLCJ1c2VyX2NsYWltcyI6eyJpc19hZG1pbiI6dHJ1ZSwiaXNfZW1wbG95ZWUiOnRydWV9fQ.8MrHbjmoN0FWJI1NQfdy9UNkY8mZF0cpBXbfQfVbfVE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/users/{{id}}/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"{{id}}",
+								""
+							]
+						},
+						"description": "Sixth Week Assignment. \n"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Categories",
+			"item": [
+				{
+					"name": "Get Categories",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/categories/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"categories",
+								""
+							]
+						},
+						"description": "Sixth Week Assignment. \n"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Categories by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/categories/{{id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"categories",
+								"{{id}}"
+							]
+						},
+						"description": "Sixth Week Assignment. \n"
+					},
+					"response": []
+				},
+				{
+					"name": "Post Categories",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlbXBsb3llZUBmaWxtcmVudGFsc3lzdGVtLmNvbSIsImV4cCI6MTY0OTA4NTkwNX0.z8t2ICKjtE6kPx5cgu-BEFWLiHlU3Juk-Mfl74rkqaI",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Other8\",\n  \"description\": \"Description\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/categories/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"categories",
+								""
+							]
+						},
+						"description": "Sixth Week Assignment. \n"
+					},
+					"response": []
+				},
+				{
+					"name": "Put Categories",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NDg1MTE2NTMsIm5iZiI6MTY0ODUxMTY1MywianRpIjoiNWNmZDNiYzAtY2ZiYy00YzgzLWI2NzktNTdlZmY2MmI4Y2JiIiwiZXhwIjoxNjQ4NTEyNTUzLCJpZGVudGl0eSI6MSwiZnJlc2giOnRydWUsInR5cGUiOiJhY2Nlc3MiLCJ1c2VyX2NsYWltcyI6eyJpc19hZG1pbiI6dHJ1ZSwiaXNfZW1wbG95ZWUiOnRydWV9fQ.pdbhm83IXcUH4lCqZ8P387fPZoYLDQJ0wOOiHW8jAAw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Drama\",\n  \"description\": \"Another Description\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/categories/{{id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"categories",
+								"{{id}}"
+							]
+						},
+						"description": "Sixth Week Assignment. \n"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Category",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NDg1MTE2NTMsIm5iZiI6MTY0ODUxMTY1MywianRpIjoiNWNmZDNiYzAtY2ZiYy00YzgzLWI2NzktNTdlZmY2MmI4Y2JiIiwiZXhwIjoxNjQ4NTEyNTUzLCJpZGVudGl0eSI6MSwiZnJlc2giOnRydWUsInR5cGUiOiJhY2Nlc3MiLCJ1c2VyX2NsYWltcyI6eyJpc19hZG1pbiI6dHJ1ZSwiaXNfZW1wbG95ZWUiOnRydWV9fQ.pdbhm83IXcUH4lCqZ8P387fPZoYLDQJ0wOOiHW8jAAw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/categories/{{id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"categories",
+								"{{id}}"
+							]
+						},
+						"description": "Sixth Week Assignment. \n"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Films",
+			"item": [
+				{
+					"name": "Get Films",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/films/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"films",
+								""
+							]
+						},
+						"description": "Sixth Week Assignment. \n"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Films By Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/films/{{id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"films",
+								"{{id}}"
+							]
+						},
+						"description": "Sixth Week Assignment. \n"
+					},
+					"response": []
+				},
+				{
+					"name": "Post Films",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBmaWxtcmVudGFsc3lzdGVtLmNvbSIsImV4cCI6MTY0OTAwMDY2MH0.YVExCZOSPTukE0PlcRlMYh-h4BnC-f6wFeE942tIDXI",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"film1\",\n  \"description\": \"film1\",\n  \"release_date\": \"2022-03-30\",\n  \"category_id\": 1,\n  \"price_by_day\": 15.15,\n  \"stock\": 15,\n  \"film_type\": \"serie\",\n  \"film_prequel_id\": null\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/films/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"films",
+								""
+							]
+						},
+						"description": "Sixth Week Assignment. \n"
+					},
+					"response": []
+				},
+				{
+					"name": "Put Films",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NDg1MTE2NTMsIm5iZiI6MTY0ODUxMTY1MywianRpIjoiNWNmZDNiYzAtY2ZiYy00YzgzLWI2NzktNTdlZmY2MmI4Y2JiIiwiZXhwIjoxNjQ4NTEyNTUzLCJpZGVudGl0eSI6MSwiZnJlc2giOnRydWUsInR5cGUiOiJhY2Nlc3MiLCJ1c2VyX2NsYWltcyI6eyJpc19hZG1pbiI6dHJ1ZSwiaXNfZW1wbG95ZWUiOnRydWV9fQ.pdbhm83IXcUH4lCqZ8P387fPZoYLDQJ0wOOiHW8jAAw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"film7--\",\n  \"description\": \"film7--\",\n  \"release_date\": \"2020-01-02\",\n  \"category_id\": 1,\n  \"price_by_day\": 18.15,\n  \"stock\": 10,\n  \"film_type\": \"serie\",\n  \"film_prequel_id\": null\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/films/{{id}}/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"films",
+								"{{id}}",
+								""
+							]
+						},
+						"description": "Sixth Week Assignment. \n"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Films",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NDg1MTE2NTMsIm5iZiI6MTY0ODUxMTY1MywianRpIjoiNWNmZDNiYzAtY2ZiYy00YzgzLWI2NzktNTdlZmY2MmI4Y2JiIiwiZXhwIjoxNjQ4NTEyNTUzLCJpZGVudGl0eSI6MSwiZnJlc2giOnRydWUsInR5cGUiOiJhY2Nlc3MiLCJ1c2VyX2NsYWltcyI6eyJpc19hZG1pbiI6dHJ1ZSwiaXNfZW1wbG95ZWUiOnRydWV9fQ.pdbhm83IXcUH4lCqZ8P387fPZoYLDQJ0wOOiHW8jAAw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/films/{{id}}/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"films",
+								"{{id}}",
+								""
+							]
+						},
+						"description": "Sixth Week Assignment. \n"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Season",
+			"item": [
+				{
+					"name": "Get Seasons",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/seasons/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"seasons",
+								""
+							]
+						},
+						"description": "Sixth Week Assignment. \n"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Seasons By Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/seasons/{{id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"seasons",
+								"{{id}}"
+							]
+						},
+						"description": "Sixth Week Assignment. \n"
+					},
+					"response": []
+				},
+				{
+					"name": "Post Seasons",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBmaWxtcmVudGFsc3lzdGVtLmNvbSIsImV4cCI6MTY0OTAwNDM2Mn0.6EOnkVJLCbJMHVLBiir2YSI_mHg1hY_zUmZ5zKbxnic",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"film_id\": 1,\n  \"title\": \"season 2\",\n  \"season_prequel_id\": null\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/seasons/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"seasons",
+								""
+							]
+						},
+						"description": "Sixth Week Assignment. \n"
+					},
+					"response": []
+				},
+				{
+					"name": "Put Seasons",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NDg1MTI1NjksIm5iZiI6MTY0ODUxMjU2OSwianRpIjoiYjQ3ODg3NzEtYjA1Ny00YTVlLWFkMmQtNmYwMDVlMjUwOGI2IiwiZXhwIjoxNjQ4NTEzNDY5LCJpZGVudGl0eSI6MSwiZnJlc2giOnRydWUsInR5cGUiOiJhY2Nlc3MiLCJ1c2VyX2NsYWltcyI6eyJpc19hZG1pbiI6dHJ1ZSwiaXNfZW1wbG95ZWUiOnRydWV9fQ.S__E3qAk0kEd7X-X7R9sppPObuYaMmhcbdWKCpI7VOc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"film_id\": 1,\n    \"title\": \"season1-\",\n    \"season_prequel_id\": null\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/seasons/{{id}}/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"seasons",
+								"{{id}}",
+								""
+							]
+						},
+						"description": "Sixth Week Assignment. \n"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Seasons",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NDg1MTI1NjksIm5iZiI6MTY0ODUxMjU2OSwianRpIjoiYjQ3ODg3NzEtYjA1Ny00YTVlLWFkMmQtNmYwMDVlMjUwOGI2IiwiZXhwIjoxNjQ4NTEzNDY5LCJpZGVudGl0eSI6MSwiZnJlc2giOnRydWUsInR5cGUiOiJhY2Nlc3MiLCJ1c2VyX2NsYWltcyI6eyJpc19hZG1pbiI6dHJ1ZSwiaXNfZW1wbG95ZWUiOnRydWV9fQ.S__E3qAk0kEd7X-X7R9sppPObuYaMmhcbdWKCpI7VOc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/seasons/{{id}}/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"seasons",
+								"{{id}}",
+								""
+							]
+						},
+						"description": "Sixth Week Assignment. \n"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Chapter",
+			"item": [
+				{
+					"name": "Get Chapters",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/chapters/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"chapters",
+								""
+							]
+						},
+						"description": "Sixth Week Assignment. \n"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Chapters By id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/chapters/{{id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"chapters",
+								"{{id}}"
+							]
+						},
+						"description": "Sixth Week Assignment. \n"
+					},
+					"response": []
+				},
+				{
+					"name": "Post Chapters",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBmaWxtcmVudGFsc3lzdGVtLmNvbSIsImV4cCI6MTY0OTAwNDM2Mn0.6EOnkVJLCbJMHVLBiir2YSI_mHg1hY_zUmZ5zKbxnic",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"season_id\": 1,\n  \"title\": \"chapter 2\",\n  \"chapter_prequel_id\": null\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/chapters/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"chapters",
+								""
+							]
+						},
+						"description": "Sixth Week Assignment. \n"
+					},
+					"response": []
+				},
+				{
+					"name": "Put Chapters",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NDg1MTI1NjksIm5iZiI6MTY0ODUxMjU2OSwianRpIjoiYjQ3ODg3NzEtYjA1Ny00YTVlLWFkMmQtNmYwMDVlMjUwOGI2IiwiZXhwIjoxNjQ4NTEzNDY5LCJpZGVudGl0eSI6MSwiZnJlc2giOnRydWUsInR5cGUiOiJhY2Nlc3MiLCJ1c2VyX2NsYWltcyI6eyJpc19hZG1pbiI6dHJ1ZSwiaXNfZW1wbG95ZWUiOnRydWV9fQ.S__E3qAk0kEd7X-X7R9sppPObuYaMmhcbdWKCpI7VOc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"season_id\": 1,\n  \"title\": \"string--\",\n  \"chapter_prequel_id\": null\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/chapters/{{id}}/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"chapters",
+								"{{id}}",
+								""
+							]
+						},
+						"description": "Sixth Week Assignment. \n"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Chapters",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NDg1MTI1NjksIm5iZiI6MTY0ODUxMjU2OSwianRpIjoiYjQ3ODg3NzEtYjA1Ny00YTVlLWFkMmQtNmYwMDVlMjUwOGI2IiwiZXhwIjoxNjQ4NTEzNDY5LCJpZGVudGl0eSI6MSwiZnJlc2giOnRydWUsInR5cGUiOiJhY2Nlc3MiLCJ1c2VyX2NsYWltcyI6eyJpc19hZG1pbiI6dHJ1ZSwiaXNfZW1wbG95ZWUiOnRydWV9fQ.S__E3qAk0kEd7X-X7R9sppPObuYaMmhcbdWKCpI7VOc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/chapters/{{id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"chapters",
+								"{{id}}"
+							]
+						},
+						"description": "Sixth Week Assignment. \n"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Persons",
+			"item": [
+				{
+					"name": "Get Persons",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/persons/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"persons",
+								""
+							]
+						},
+						"description": "Sixth Week Assignment. \n"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Persons By Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/persons/{{id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"persons",
+								"{{id}}"
+							]
+						},
+						"description": "Sixth Week Assignment. \n"
+					},
+					"response": []
+				},
+				{
+					"name": "Post Persons",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBmaWxtcmVudGFsc3lzdGVtLmNvbSIsImV4cCI6MTY0OTAxNTY1M30.07E3677hGMGAINx1M8_sKYdof5YhlqkrwXsfjlJZUF8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"jose\",\n  \"lastname\": \"almonte\",\n  \"gender\": \"male\",\n  \"date_of_birth\": \"2003-03-25\",\n  \"person_type\": \"film related\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/persons/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"persons",
+								""
+							]
+						},
+						"description": "Sixth Week Assignment. \n"
+					},
+					"response": []
+				},
+				{
+					"name": "Put Persons",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NDg1MTMyMDcsIm5iZiI6MTY0ODUxMzIwNywianRpIjoiNGJlMjUwOTUtYTMyYy00MWE1LWJhYzctYjExMTAwYWM0YmVkIiwiZXhwIjoxNjQ4NTE0MTA3LCJpZGVudGl0eSI6MSwiZnJlc2giOnRydWUsInR5cGUiOiJhY2Nlc3MiLCJ1c2VyX2NsYWltcyI6eyJpc19hZG1pbiI6dHJ1ZSwiaXNfZW1wbG95ZWUiOnRydWV9fQ.eIuncxNcwZ6gPONb3XTpys6V-SPlHbtl-zeeZUxVuhQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"jose--\",\n  \"lastname\": \"almonte--\",\n  \"gender\": \"male\",\n  \"date_of_birth\": \"1996-03-25\",\n  \"person_type\": \"client\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/persons/{{id}}/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"persons",
+								"{{id}}",
+								""
+							]
+						},
+						"description": "Sixth Week Assignment. \n"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Persons",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NDg1MTMyMDcsIm5iZiI6MTY0ODUxMzIwNywianRpIjoiNGJlMjUwOTUtYTMyYy00MWE1LWJhYzctYjExMTAwYWM0YmVkIiwiZXhwIjoxNjQ4NTE0MTA3LCJpZGVudGl0eSI6MSwiZnJlc2giOnRydWUsInR5cGUiOiJhY2Nlc3MiLCJ1c2VyX2NsYWltcyI6eyJpc19hZG1pbiI6dHJ1ZSwiaXNfZW1wbG95ZWUiOnRydWV9fQ.eIuncxNcwZ6gPONb3XTpys6V-SPlHbtl-zeeZUxVuhQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/persons/{{id}}/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"persons",
+								"{{id}}",
+								""
+							]
+						},
+						"description": "Sixth Week Assignment. \n"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Roles",
+			"item": [
+				{
+					"name": "Get Roles",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/roles/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"roles",
+								""
+							]
+						},
+						"description": "Sixth Week Assignment. \n"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Roles by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/roles/{{id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"roles",
+								"{{id}}"
+							]
+						},
+						"description": "Sixth Week Assignment. \n"
+					},
+					"response": []
+				},
+				{
+					"name": "Post Roles",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NDg1MTM4ODQsIm5iZiI6MTY0ODUxMzg4NCwianRpIjoiNzU3ODgzZTMtMTc4NC00M2NjLWE2NDMtMDZjZDNjZTNhYjNkIiwiZXhwIjoxNjQ4NTE0Nzg0LCJpZGVudGl0eSI6MSwiZnJlc2giOnRydWUsInR5cGUiOiJhY2Nlc3MiLCJ1c2VyX2NsYWltcyI6eyJpc19hZG1pbiI6dHJ1ZSwiaXNfZW1wbG95ZWUiOnRydWV9fQ.xgp6A8i3kTB4oGvwTiG5174SAazmYaA8pFBNNy_A2rk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"director\",\n  \"description\": \"description\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/roles/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"roles",
+								""
+							]
+						},
+						"description": "Sixth Week Assignment. \n"
+					},
+					"response": []
+				},
+				{
+					"name": "Put Roles",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NDg1MTM5NzMsIm5iZiI6MTY0ODUxMzk3MywianRpIjoiZTZmMjhhMmItYTgyZS00MTU0LThjODktZDk1MTIyM2MzYTM1IiwiZXhwIjoxNjQ4NTE0ODczLCJpZGVudGl0eSI6MSwiZnJlc2giOnRydWUsInR5cGUiOiJhY2Nlc3MiLCJ1c2VyX2NsYWltcyI6eyJpc19hZG1pbiI6dHJ1ZSwiaXNfZW1wbG95ZWUiOnRydWV9fQ.2o4djHTgZH_rYz27J3eC_lNAQpi_FNQtfRWfIM5Ak7s",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"string\",\n  \"description\": \"string\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/roles/{{id}}/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"roles",
+								"{{id}}",
+								""
+							]
+						},
+						"description": "Sixth Week Assignment. \n"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Roles",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NDg1MTM5NzMsIm5iZiI6MTY0ODUxMzk3MywianRpIjoiZTZmMjhhMmItYTgyZS00MTU0LThjODktZDk1MTIyM2MzYTM1IiwiZXhwIjoxNjQ4NTE0ODczLCJpZGVudGl0eSI6MSwiZnJlc2giOnRydWUsInR5cGUiOiJhY2Nlc3MiLCJ1c2VyX2NsYWltcyI6eyJpc19hZG1pbiI6dHJ1ZSwiaXNfZW1wbG95ZWUiOnRydWV9fQ.2o4djHTgZH_rYz27J3eC_lNAQpi_FNQtfRWfIM5Ak7s",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/roles/{{id}}/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"roles",
+								"{{id}}",
+								""
+							]
+						},
+						"description": "Sixth Week Assignment. \n"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "FilmsPersonsRoles",
+			"item": [
+				{
+					"name": "Get FilmsPersonsRoles",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/films-persons-roles/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"films-persons-roles",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get FilmsPersonsRoles by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/films-persons-roles/{{id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"films-persons-roles",
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post FilmsPersonsRoles",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NDg1MTM5NzMsIm5iZiI6MTY0ODUxMzk3MywianRpIjoiZTZmMjhhMmItYTgyZS00MTU0LThjODktZDk1MTIyM2MzYTM1IiwiZXhwIjoxNjQ4NTE0ODczLCJpZGVudGl0eSI6MSwiZnJlc2giOnRydWUsInR5cGUiOiJhY2Nlc3MiLCJ1c2VyX2NsYWltcyI6eyJpc19hZG1pbiI6dHJ1ZSwiaXNfZW1wbG95ZWUiOnRydWV9fQ.2o4djHTgZH_rYz27J3eC_lNAQpi_FNQtfRWfIM5Ak7s",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"film_id\": 1,\n  \"person_id\": 1,\n  \"role_id\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/films-persons-roles/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"films-persons-roles",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Put FilmsPersonsRoles",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NDg1MTM5NzMsIm5iZiI6MTY0ODUxMzk3MywianRpIjoiZTZmMjhhMmItYTgyZS00MTU0LThjODktZDk1MTIyM2MzYTM1IiwiZXhwIjoxNjQ4NTE0ODczLCJpZGVudGl0eSI6MSwiZnJlc2giOnRydWUsInR5cGUiOiJhY2Nlc3MiLCJ1c2VyX2NsYWltcyI6eyJpc19hZG1pbiI6dHJ1ZSwiaXNfZW1wbG95ZWUiOnRydWV9fQ.2o4djHTgZH_rYz27J3eC_lNAQpi_FNQtfRWfIM5Ak7s",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"film_id\": 3,\n  \"person_id\": 1,\n  \"role_id\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/films-persons-roles/{{id}}/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"films-persons-roles",
+								"{{id}}",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete FilmsPersonsRoles",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NDg1MTM5NzMsIm5iZiI6MTY0ODUxMzk3MywianRpIjoiZTZmMjhhMmItYTgyZS00MTU0LThjODktZDk1MTIyM2MzYTM1IiwiZXhwIjoxNjQ4NTE0ODczLCJpZGVudGl0eSI6MSwiZnJlc2giOnRydWUsInR5cGUiOiJhY2Nlc3MiLCJ1c2VyX2NsYWltcyI6eyJpc19hZG1pbiI6dHJ1ZSwiaXNfZW1wbG95ZWUiOnRydWV9fQ.2o4djHTgZH_rYz27J3eC_lNAQpi_FNQtfRWfIM5Ak7s",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/films-persons-roles/{{id}}/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"films-persons-roles",
+								"{{id}}",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Client",
+			"item": [
+				{
+					"name": "Get Clients",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/clients/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"clients",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Clients By id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/clients/{{id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"clients",
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post Clients",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBmaWxtcmVudGFsc3lzdGVtLmNvbSIsImV4cCI6MTY0ODg1ODg2Nn0.qVQpqS5L-QeszI4F79PK74EM629xs_O_cOUtKgLMEug",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"person_id\": 1,\n  \"direction\": \"R.D\",\n  \"phone\": \"503-4587-9647\",\n  \"email\": \"example@gmail.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/clients/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"clients",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Put Clients",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NDg1MTM5NzMsIm5iZiI6MTY0ODUxMzk3MywianRpIjoiZTZmMjhhMmItYTgyZS00MTU0LThjODktZDk1MTIyM2MzYTM1IiwiZXhwIjoxNjQ4NTE0ODczLCJpZGVudGl0eSI6MSwiZnJlc2giOnRydWUsInR5cGUiOiJhY2Nlc3MiLCJ1c2VyX2NsYWltcyI6eyJpc19hZG1pbiI6dHJ1ZSwiaXNfZW1wbG95ZWUiOnRydWV9fQ.2o4djHTgZH_rYz27J3eC_lNAQpi_FNQtfRWfIM5Ak7s",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"person_id\": 1,\n  \"direction\": \"string\",\n  \"phone\": \"503-4587-9647\",\n  \"email\": \"example@gmail.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/clients/{{id}}/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"clients",
+								"{{id}}",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Clients",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NDg1MTM5NzMsIm5iZiI6MTY0ODUxMzk3MywianRpIjoiZTZmMjhhMmItYTgyZS00MTU0LThjODktZDk1MTIyM2MzYTM1IiwiZXhwIjoxNjQ4NTE0ODczLCJpZGVudGl0eSI6MSwiZnJlc2giOnRydWUsInR5cGUiOiJhY2Nlc3MiLCJ1c2VyX2NsYWltcyI6eyJpc19hZG1pbiI6dHJ1ZSwiaXNfZW1wbG95ZWUiOnRydWV9fQ.2o4djHTgZH_rYz27J3eC_lNAQpi_FNQtfRWfIM5Ak7s",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/clients/{{id}}/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"clients",
+								"{{id}}",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Rents",
+			"item": [
+				{
+					"name": "Get Rents",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/rents/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"rents",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Rents By id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/rents/{{id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"rents",
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post Rents",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlbXBsb3llZUBmaWxtcmVudGFsc3lzdGVtLmNvbSIsImV4cCI6MTY0OTA4NTkwNX0.z8t2ICKjtE6kPx5cgu-BEFWLiHlU3Juk-Mfl74rkqaI",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"film_id\": 1,\n  \"client_id\": 1,\n  \"amount\": 3,\n  \"start_date\": \"2020-03-25\",\n  \"return_date\": \"2020-03-26\",\n  \"actual_return_date\": \"2020-03-30\",\n  \"state\": \"open\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/rents/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"rents",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Put Rents",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NDg1MTQ2NzMsIm5iZiI6MTY0ODUxNDY3MywianRpIjoiN2FmZTUzMjgtZjc1My00ZTQ2LWI3ZWYtNTNjODdkMDc0NGE4IiwiZXhwIjoxNjQ4NTE1NTczLCJpZGVudGl0eSI6MSwiZnJlc2giOnRydWUsInR5cGUiOiJhY2Nlc3MiLCJ1c2VyX2NsYWltcyI6eyJpc19hZG1pbiI6dHJ1ZSwiaXNfZW1wbG95ZWUiOnRydWV9fQ.QlJKS_47hXOJ1QANXhBjK_Fy9-eLLy5f8yICRiEEhF8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"film_id\": 1,\n  \"client_id\": 1,\n  \"amount\": 3,\n  \"start_date\": \"2020-03-15\",\n  \"return_date\": \"2020-03-25\",\n  \"actual_return_date\": \"2020-03-27\",\n  \"state\": \"open\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/rents/{{id}}/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"rents",
+								"{{id}}",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Rents",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NDg1MTQ2NzMsIm5iZiI6MTY0ODUxNDY3MywianRpIjoiN2FmZTUzMjgtZjc1My00ZTQ2LWI3ZWYtNTNjODdkMDc0NGE4IiwiZXhwIjoxNjQ4NTE1NTczLCJpZGVudGl0eSI6MSwiZnJlc2giOnRydWUsInR5cGUiOiJhY2Nlc3MiLCJ1c2VyX2NsYWltcyI6eyJpc19hZG1pbiI6dHJ1ZSwiaXNfZW1wbG95ZWUiOnRydWV9fQ.QlJKS_47hXOJ1QANXhBjK_Fy9-eLLy5f8yICRiEEhF8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/rents/{{id}}/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"rents",
+								"{{id}}",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	]
+}
