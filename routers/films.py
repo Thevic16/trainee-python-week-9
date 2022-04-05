@@ -9,7 +9,8 @@ from databases.db import get_db_session
 from models.films_and_rents import (CategoryRead, Category, CategoryCreate,
                                     FilmRead, Film, FilmCreate, SeasonRead,
                                     Season, SeasonCreate, ChapterRead, Chapter,
-                                    ChapterCreate)
+                                    ChapterCreate, PosterCreate, Poster,
+                                    PosterRead)
 from s3_events.s3_utils import S3_SERVICE
 from security.security import get_admin_user
 
@@ -203,9 +204,28 @@ async def delete_a_film(film_id: int):
     return result
 
 
-@router.post("/api/films/upload/poster", status_code=200,
+@router.get('/api/posters', response_model=List[PosterRead],
+            status_code=status.HTTP_200_OK)
+async def get_all_posters():
+    session.rollback()
+    statement = select(Poster)
+    results = session.exec(statement).all()
+
+    return results
+
+
+@router.get('/api/posters/{poster_id}', response_model=PosterRead)
+async def get_by_id_a_poster(poster_id: int):
+    session.rollback()
+    statement = select(Poster).where(Poster.id == poster_id)
+    result = session.exec(statement).first()
+
+    return result
+
+
+@router.post("/api/poster/upload/{film_id}", status_code=200,
              description="Upload png poster asset to S3 ")
-async def upload(fileobject: UploadFile = File(...)):
+async def upload_poster(film_id: int, fileobject: UploadFile = File(...)):
     filename = fileobject.filename
     current_time = datetime.datetime.now()
     # split the file name into two different path (string +  extention)
@@ -228,9 +248,34 @@ async def upload(fileobject: UploadFile = File(...)):
                  f"{S3_Bucket}.s3.{AWS_REGION}.amazonaws.com/" \
                  f"{S3_Key}{file_name_unique + file_extension}"
         Logger.info(f"s3_url:{s3_url}")
+
+        session.rollback()
+        new_poster = Poster(film_id=film_id,
+                            link=s3_url)
+        session.add(new_poster)
+        session.commit()
+
         return {"status": "success", "image_url": s3_url}  # response added
     else:
         raise HTTPException(status_code=400, detail="Failed to upload in S3")
+
+
+@router.delete('/api/posters/{poster_id}',
+               status_code=status.HTTP_204_NO_CONTENT,
+               dependencies=[Depends(get_admin_user)])
+async def delete_a_poster(poster_id: int):
+    session.rollback()
+    statement = select(Poster).where(Poster.id == poster_id)
+
+    result = session.exec(statement).one_or_none()
+
+    if result is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail="Resource Not Found")
+
+    session.delete(result)
+
+    return result
 
 
 @router.get('/api/seasons', response_model=List[SeasonRead],

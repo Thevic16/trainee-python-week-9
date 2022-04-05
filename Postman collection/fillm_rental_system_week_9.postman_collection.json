@@ -53,7 +53,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NDg1MTA4MzAsIm5iZiI6MTY0ODUxMDgzMCwianRpIjoiZjQzZjRkN2QtMTY0Ny00MjU3LTkxNmItODMyNDkxZWExODRhIiwiZXhwIjoxNjQ4NTExNzMwLCJpZGVudGl0eSI6MSwiZnJlc2giOnRydWUsInR5cGUiOiJhY2Nlc3MiLCJ1c2VyX2NsYWltcyI6eyJpc19hZG1pbiI6dHJ1ZSwiaXNfZW1wbG95ZWUiOnRydWV9fQ.46sqZai4ikl3dAkS4jwb5jh2dUEbKwr8CVz7z-eK_Wo",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBmaWxtcmVudGFsc3lzdGVtLmNvbSIsImV4cCI6MTY0OTEwNTcwNX0.8hrsYqW30tKptTa9j69taGyUZDsrS0BwpY7ZN5a-xx0",
 									"type": "string"
 								}
 							]
@@ -99,7 +99,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"username\": \"employee@filmrentalsystem.com\",\n  \"password\": \"employee12345678\",\n  \"is_admin\": false,\n  \"is_employee\": true\n}",
+							"raw": "{\n  \"username\": \"admin@filmrentalsystem.com\",\n  \"password\": \"admin12345678\",\n  \"is_admin\": true,\n  \"is_employee\": false\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -492,6 +492,81 @@
 							"path": [
 								"api",
 								"films",
+								"{{id}}",
+								""
+							]
+						},
+						"description": "Sixth Week Assignment. \n"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Films Posters",
+			"item": [
+				{
+					"name": "Get Posters",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/posters",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"posters"
+							]
+						},
+						"description": "Sixth Week Assignment. \n"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Posters By Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/posters/{{id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"posters",
+								"{{id}}"
+							]
+						},
+						"description": "Sixth Week Assignment. \n"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Poster",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBmaWxtcmVudGFsc3lzdGVtLmNvbSIsImV4cCI6MTY0OTEyOTk3Nn0.TUfGN20OjxUTZ1DLkU8C5Ds9dwBCbXhUO0_YjIBQRuY",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/posters/{{id}}/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"posters",
 								"{{id}}",
 								""
 							]
@@ -1470,7 +1545,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlbXBsb3llZUBmaWxtcmVudGFsc3lzdGVtLmNvbSIsImV4cCI6MTY0OTA4NTkwNX0.z8t2ICKjtE6kPx5cgu-BEFWLiHlU3Juk-Mfl74rkqaI",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBmaWxtcmVudGFsc3lzdGVtLmNvbSIsImV4cCI6MTY0OTEwNTcwNX0.8hrsYqW30tKptTa9j69taGyUZDsrS0BwpY7ZN5a-xx0",
 									"type": "string"
 								}
 							]
@@ -1479,7 +1554,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"film_id\": 1,\n  \"client_id\": 1,\n  \"amount\": 3,\n  \"start_date\": \"2020-03-25\",\n  \"return_date\": \"2020-03-26\",\n  \"actual_return_date\": \"2020-03-30\",\n  \"state\": \"open\"\n}",
+							"raw": "{\n  \"film_id\": 2,\n  \"client_id\": 1,\n  \"amount\": 2,\n  \"start_date\": \"2020-03-25\",\n  \"return_date\": \"2020-03-26\",\n  \"actual_return_date\": \"2020-03-30\",\n  \"state\": \"open\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"

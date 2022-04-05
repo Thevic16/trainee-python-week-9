@@ -81,6 +81,24 @@ class FilmRead(FilmBase):
     availability: Optional[int]
 
 
+class PosterBase(SQLModel):
+    film_id: int = Field(foreign_key="film.id")
+
+
+class Poster(PosterBase, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+    link: str
+
+
+class PosterCreate(PosterBase):
+    pass
+
+
+class PosterRead(PosterBase):
+    id: int
+    link: str
+
+
 class SeasonBase(SQLModel):
     film_id: int = Field(foreign_key="film.id")
     title: str = Field(sa_column=Column("title", String, unique=True))
