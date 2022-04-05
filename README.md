@@ -35,7 +35,7 @@ Search for Token form, and then put the username (email) and password of the
 user you want to use. 
 
 # Heroku URl for API documentation. 
-link: https://week9-film-rental-system.herokuapp.com/doc/
+link: https://week9-film-rental-system.herokuapp.com/docs/
 
 # Commands to seed ten records by table.
 Note: It would be a good idea to run the commands in the same order that
