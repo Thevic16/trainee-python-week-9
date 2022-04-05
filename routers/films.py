@@ -206,6 +206,7 @@ async def delete_a_film(film_id: int):
 
 @router.get('/api/posters', response_model=List[PosterRead],
             status_code=status.HTTP_200_OK)
+@cache_one_month()
 async def get_all_posters():
     session.rollback()
     statement = select(Poster)
@@ -215,6 +216,7 @@ async def get_all_posters():
 
 
 @router.get('/api/posters/{poster_id}', response_model=PosterRead)
+@cache_one_month()
 async def get_by_id_a_poster(poster_id: int):
     session.rollback()
     statement = select(Poster).where(Poster.id == poster_id)
