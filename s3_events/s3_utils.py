@@ -22,7 +22,7 @@ class S3_SERVICE(object):
                                          self.aws_secret_access_key,
                                          aws_access_key_id=
                                          self.aws_access_key_id) as client:
-            file_upload_response = await client.put_object(ACL="public-read",
+            file_upload_response = await client.put_object(
                                                            Bucket=bucket,
                                                            Key=key,
                                                            Body=fileobject)

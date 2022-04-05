@@ -20,6 +20,8 @@ from fastapi.param_functions import File
 from fastapi.datastructures import UploadFile
 import datetime
 
+from utilities.logger import Logger
+
 load_dotenv()
 
 router = APIRouter()
@@ -201,7 +203,7 @@ async def delete_a_film(film_id: int):
     return result
 
 
-@router.post("api/films/upload/poster", status_code=200,
+@router.post("/api/films/upload/poster", status_code=200,
              description="Upload png poster asset to S3 ")
 async def upload(fileobject: UploadFile = File(...)):
     filename = fileobject.filename
@@ -211,19 +213,21 @@ async def upload(fileobject: UploadFile = File(...)):
         filename)
 
     # for realtime application you must have genertae unique name for the file
-    file_name_unique = str(current_time.timestamp()).replace('.','')
+    file_name_unique = str(current_time.timestamp()).replace('.', '')
 
     file_extension = split_file_name[1]  # file extention
     # Converting tempfile.SpooledTemporaryFile to io.BytesIO
     data = fileobject.file._file
-    uploads3 = await s3_client.upload_fileobj(bucket=S3_Bucket,
-                                              key=S3_Key + file_name_unique
-                                                  + file_extension,
-                                              fileobject=data)
+    uploads3 = await s3_client.upload_fileobj(
+        bucket=S3_Bucket,
+        key=S3_Key + file_name_unique + file_extension,
+        fileobject=data)
+
     if uploads3:
         s3_url = f"https://" \
                  f"{S3_Bucket}.s3.{AWS_REGION}.amazonaws.com/" \
                  f"{S3_Key}{file_name_unique + file_extension}"
+        Logger.info(f"s3_url:{s3_url}")
         return {"status": "success", "image_url": s3_url}  # response added
     else:
         raise HTTPException(status_code=400, detail="Failed to upload in S3")
