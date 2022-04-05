@@ -106,6 +106,7 @@ async def delete_a_category(category_id: int):
                             detail="Resource Not Found")
 
     session.delete(result)
+    session.commit()
 
     return result
 
@@ -200,6 +201,7 @@ async def delete_a_film(film_id: int):
                             detail="Resource Not Found")
 
     session.delete(result)
+    session.commit()
 
     return result
 
@@ -276,6 +278,7 @@ async def delete_a_poster(poster_id: int):
                             detail="Resource Not Found")
 
     session.delete(result)
+    session.commit()
 
     return result
 
@@ -347,6 +350,7 @@ async def delete_a_season(season_id: int):
                             detail="Resource Not Found")
 
     session.delete(result)
+    session.commit()
 
     return result
 
@@ -419,5 +423,6 @@ async def delete_a_chapter(chapter_id: int):
                             detail="Resource Not Found")
 
     session.delete(result)
+    session.commit()
 
     return result

@@ -85,5 +85,6 @@ async def delete_a_user(user_id: int):
                             detail="Resource Not Found")
 
     session.delete(result)
+    session.commit()
 
     return result

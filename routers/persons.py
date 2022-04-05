@@ -92,6 +92,7 @@ async def delete_a_person(person_id: int):
                             detail="Resource Not Found")
 
     session.delete(result)
+    session.commit()
 
     return result
 
@@ -162,6 +163,7 @@ async def delete_a_role(role_id: int):
                             detail="Resource Not Found")
 
     session.delete(result)
+    session.commit()
 
     return result
 
@@ -242,6 +244,7 @@ async def delete_a_film_person_role(film_person_role_id: int):
                             detail="Resource Not Found")
 
     session.delete(result)
+    session.commit()
 
     return result
 
@@ -316,5 +319,6 @@ async def delete_a_client(client_id: int):
                             detail="Resource Not Found")
 
     session.delete(result)
+    session.commit()
 
     return result
