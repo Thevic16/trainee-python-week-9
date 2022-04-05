@@ -1,6 +1,6 @@
 from typing import List
 
-from fastapi import APIRouter, Depends, HTTPException, Request
+from fastapi import APIRouter, Depends, HTTPException
 from fastapi_redis_cache import cache_one_month
 from sqlmodel import select
 from starlette import status
@@ -9,8 +9,7 @@ from databases.db import get_db_session
 from models.films_and_rents import (CategoryRead, Category, CategoryCreate,
                                     FilmRead, Film, FilmCreate, SeasonRead,
                                     Season, SeasonCreate, ChapterRead, Chapter,
-                                    ChapterCreate, PosterCreate, Poster,
-                                    PosterRead)
+                                    ChapterCreate, Poster, PosterRead)
 from s3_events.s3_utils import S3_SERVICE
 from security.security import get_admin_user
 

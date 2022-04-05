@@ -12,9 +12,12 @@ from models.films_and_rents import Film, Category, Season, Chapter, Rent, \
 from models.persons import Role, Person, FilmPersonRole, Client
 from models.users import User
 from security.security import get_password_hash
-from utilities.generators_functions import get_random_string, gen_date, \
-    gen_random_float, gen_random_int, gen_random_film_type, gen_person_gender, \
-    gen_person_type, gen_phone, gen_number, gen_dates
+from utilities.generators_functions import (get_random_string, gen_date,
+                                            gen_random_float, gen_random_int,
+                                            gen_random_film_type,
+                                            gen_person_gender,
+                                            gen_person_type, gen_phone,
+                                            gen_number)
 
 app = typer.Typer()
 session = get_db_session()

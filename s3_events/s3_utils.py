@@ -17,15 +17,14 @@ class S3_SERVICE(object):
 
     async def upload_fileobj(self, fileobject, bucket, key):
         session = aiobotocore.get_session()
-        async with session.create_client('s3', region_name=self.region,
-                                         aws_secret_access_key=
-                                         self.aws_secret_access_key,
-                                         aws_access_key_id=
-                                         self.aws_access_key_id) as client:
+        async with session.create_client(
+                's3', region_name=self.region,
+                aws_secret_access_key=self.aws_secret_access_key,
+                aws_access_key_id=self.aws_access_key_id) as client:
             file_upload_response = await client.put_object(
-                                                           Bucket=bucket,
-                                                           Key=key,
-                                                           Body=fileobject)
+                Bucket=bucket,
+                Key=key,
+                Body=fileobject)
 
             if file_upload_response["ResponseMetadata"]["HTTPStatusCode"] \
                     == 200:

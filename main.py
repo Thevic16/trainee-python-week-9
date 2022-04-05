@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Request, Response
 from sqlalchemy.exc import IntegrityError
-from sqlmodel import SQLModel, Session
+from sqlmodel import SQLModel
 from starlette.responses import JSONResponse
 
 from databases.db import engine, get_db_session
@@ -61,7 +61,7 @@ async def NoneType_exception_handler(request: Request,
     Logger.error(f"AttributeError: {exc}")
     return JSONResponse(
         status_code=500,
-        content={"message": f"TypeError"},
+        content={"message": "TypeError"},
     )
 
 

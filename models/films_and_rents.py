@@ -102,12 +102,10 @@ class PosterRead(PosterBase):
 class SeasonBase(SQLModel):
     film_id: int = Field(foreign_key="film.id")
     title: str = Field(sa_column=Column("title", String, unique=True))
-    season_prequel_id: Optional[int] = Field(default=None,
-                                             foreign_key="season.id",
-                                             sa_column=
-                                             Column("season_prequel_id",
-                                                    Integer,
-                                                    unique=True))
+    season_prequel_id: Optional[int] = Field(
+        default=None,
+        foreign_key="season.id",
+        sa_column=Column("season_prequel_id", Integer, unique=True))
 
 
 class Season(SeasonBase, table=True):
@@ -125,11 +123,10 @@ class SeasonRead(SeasonBase):
 class ChapterBase(SQLModel):
     season_id: int = Field(foreign_key="season.id")
     title: str = Field(sa_column=Column("title", String, unique=True))
-    chapter_prequel_id: Optional[int] = Field(default=None,
-                                              foreign_key="chapter.id",
-                                              sa_column=
-                                              Column("chapter_prequel_id",
-                                                     Integer, unique=True))
+    chapter_prequel_id: Optional[int] = Field(
+        default=None,
+        foreign_key="chapter.id",
+        sa_column=Column("chapter_prequel_id", Integer, unique=True))
 
 
 class Chapter(ChapterBase, table=True):
