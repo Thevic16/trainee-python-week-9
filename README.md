@@ -41,14 +41,14 @@ link: https://week9-film-rental-system.herokuapp.com/docs/
 Note: It would be a good idea to run the commands in the same order that
 appears down to avoid errors for nonexistent data dependency.
 
-- python command.py accountsgen --user_type (-a argument to create as admins or
+- python command.py usersgen --user-type (-a argument to create as admins or
 -e argument to create as employees).
 - python command.py categoriesgen
 - python command.py filmsgen
 - python command.py seasonsgen
 - python command.py chaptersgen
 - python command.py rolesgen
-- python command.py personsgen
+- python command.py persongen
 - python command.py clientsgen
 - python command.py filmspersonsrolesgen
 - python command.py rentsgen
